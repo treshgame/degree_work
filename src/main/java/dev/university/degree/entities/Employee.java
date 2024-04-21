@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +20,7 @@ public class Employee {
     private String firstName;
     private String surname;
     private String middleName;
-    private LocalDateTime jobStart;
-    private LocalDateTime timeQuited;
+    private LocalDate jobStart;
+    private LocalDate timeQuited;
     private EmployeeStatus status;
 }

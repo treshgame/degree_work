@@ -3,6 +3,7 @@ package dev.university.degree.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,5 +16,5 @@ public class Vet {
     private Employee employee_id;
     private String spec;
     private String secondSpec;
-    private LocalDateTime startOfWork;
+    private LocalDate startOfWork;
 }

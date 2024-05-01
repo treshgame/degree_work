@@ -1,5 +1,6 @@
 package dev.university.degree.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,7 +17,8 @@ public class Animal {
     private String breed;
     private LocalDate birthday;
     @ManyToOne
-    private Owner owner;
+    private Client client;
     @ManyToOne
-    private Vet vet;
+    @Nullable
+    private Employee vet;
 }

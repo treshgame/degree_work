@@ -11,7 +11,7 @@ public class Bill {
     private Long id;
     private double sum;
     @ManyToOne
-    private Owner owner;
+    private Client client;
     @ManyToOne
     private Employee employee;
 }

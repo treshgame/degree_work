@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header" class="administrator_header">
+    <div class="header_menu">
+        <ul class="header_menu_list">
+            <li><a th:href="@{/owner/add_vet}">добавить врача</a></li>
+            <li><a th:href="@{/owner/add_supplier}">добавить поставщика</a></li>
+            <li><a th:href="@{/owner/add_medication}">добавить лекарство</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

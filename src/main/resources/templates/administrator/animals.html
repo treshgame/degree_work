@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список всех животных</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
+<section class="body">
+    <h1>Список всех животных</h1>
+    <div class="">
+        <table class="table table-boarded">
+            <thead>
+                <tr>
+                    <th>Кличка</th>
+                    <th>Вид</th>
+                    <th>Порода</th>
+                    <th>Владелец</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="animal : ${animals}">
+                    <td th:text="${animal.name}"></td>
+                    <td th:text="${animal.kind}"></td>
+                    <td th:text="${animal.breed}"></td>
+                    <td th:text=
+                        "${animal.client.surname} + ' '
+                        + ${animal.client.firstName} + ' '
+                        + ${animal.client.middleName}"
+                    >
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<div th:insert="~{common/footer.html :: footer}"></div>
+</body>
+</html>

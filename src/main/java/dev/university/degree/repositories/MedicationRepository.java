@@ -1,9 +1,9 @@
 package dev.university.degree.repositories;
 
-import dev.university.degree.entities.Owner;
+import dev.university.degree.entities.Medication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OwnerRepository extends JpaRepository<Owner, Long> {
+public interface MedicationRepository extends JpaRepository<Medication, Long> {
 }

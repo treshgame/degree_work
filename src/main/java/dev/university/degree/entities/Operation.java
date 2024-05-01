@@ -12,7 +12,7 @@ public class Operation {
     @ManyToOne
     private Animal animal;
     @ManyToOne
-    private Vet operator;
+    private Employee operator;
     @ManyToOne
-    private Vet assistant;
+    private Employee assistant;
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить животное</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
+<section class="body">
+    <h1>Добавление животного</h1>
+    <div class="add_form">
+        <form th:action="@{/administrator/add_animal}" th:object="${animal}" method="post">
+            <div class="form-section">
+                <label>кличка</label>
+                <input type="text" class="form-control" th:field="*{name}">
+            </div>
+            <div class="form-section">
+                <label>вид</label>
+                <input type="text" class="form-control" th:field="*{kind}">
+            </div>
+            <div class="form-section">
+                <label>порода</label>
+                <input type="text" class="form-control" th:field="*{breed}">
+            </div>
+            <div class="form-section">
+                <label>владелец</label>
+                <select class="form-control"  th:field="*{client}">
+                    <option th:each="client : ${clients}" th:value="${client.id}"
+                            th:text="${client.surname} + ' ' + ${client.firstName}"></option>
+                </select>
+            </div>
+            <div class="form-section">
+                <input type="submit" class="btn" value="добавить">
+                <input type="submit" class="btn" value="добавить">
+            </div>
+        </form>
+    </div>
+</section>
+<div th:insert="~{common/footer.html :: footer}"></div>
+</body>
+</html>

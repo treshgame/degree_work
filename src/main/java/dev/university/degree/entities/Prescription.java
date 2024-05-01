@@ -12,6 +12,6 @@ public class Prescription {
     @ManyToOne
     private Animal animal;
     @ManyToOne
-    private Vet vet;
+    private Employee vet;
     private String comment;
 }

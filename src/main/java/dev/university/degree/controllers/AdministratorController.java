@@ -15,7 +15,10 @@ public class AdministratorController {
     ClientRepository clientRepository;
     AnimalRepository animalRepository;
     @Autowired
-    public AdministratorController(ClientRepository clientRepository, AnimalRepository animalRepository){
+    public AdministratorController(
+        ClientRepository clientRepository,
+        AnimalRepository animalRepository
+    ){
         this.clientRepository = clientRepository;
         this.animalRepository = animalRepository;
     }

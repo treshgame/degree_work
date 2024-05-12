@@ -1,16 +1,18 @@
 package dev.university.degree.entities;
 
 import dev.university.degree.util.Unit;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Table(
+    uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"name", "unit"})
+    }
+)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Medication {
@@ -20,5 +22,4 @@ public class Medication {
     private String name;
     private Unit unit;
     private int amount;
-    private double pricePerUnit;
 }

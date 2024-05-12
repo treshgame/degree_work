@@ -1,6 +1,5 @@
 package dev.university.degree.entities;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,14 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class SupplyDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String surname;
-    @Nullable
-    private String middleName;
-    private String phoneNumber;
-    private String email;
+    @ManyToOne
+    private Supply supply;
+    @ManyToOne
+    private Medication medication;
+    private double pricePerAmount;
+    private int amount;
 }

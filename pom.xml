@@ -60,7 +60,13 @@
 <!--			<scope>test</scope>-->
 <!--		</dependency>-->
 	</dependencies>
-
+	<annotationProcessorPaths>
+		<path>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.32</version>
+		</path>
+	</annotationProcessorPaths>
 	<build>
 		<plugins>
 			<plugin>

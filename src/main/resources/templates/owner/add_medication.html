@@ -28,17 +28,12 @@
                     <label>количество на складе</label>
                     <input type="number" class="form-control" th:field="*{amount}" min="0" step="1">
                 </div>
-                <div class="form-section">
-                    <label>цена за единицу</label>
-                    <input type="number" class="form-control" th:field="*{pricePerUnit}" min="0" step="0.01">
-                </div>
                 <div class="fom-section">
                     <input type="submit" class="btn" value="добавить">
                 </div>
             </form>
         </div>
     </div>
-
 </section>
 <div th:insert="~{common/footer.html :: footer}"></div>
 </body>

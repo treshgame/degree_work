@@ -65,12 +65,6 @@ a{
     padding: 30px 0;
 }
 
-.form-section label{
-    color: #2B5F8E;
-    font-weight: bold;
-
-}
-
 .add_form{
     display: flex;
     flex-direction: column;
@@ -80,7 +74,7 @@ a{
 }
 
 form{
-    max-width: 600px;
+    max-width: 1000px;
 }
 
 .form-section{
@@ -92,7 +86,7 @@ form{
 
 .btn{
     border-color: #2B5F8E;
-    border-width: 10px;
+    border-width: 7px;
     padding: 10px 5px;
     color: #2B5F8E;
     font-size: 16pt;
@@ -108,11 +102,26 @@ form{
 }
 
 .form-section label{
+    color: #2B5F8E;
+    font-weight: bold;
     font-size: 16pt;
     font-weight: bold;
     text-align: center;
     margin: 5px 0;
     text-transform: uppercase;
+}
+
+td{
+  margin: 0 auto;
+  padding: 5px 0;
+  background-color: #2B5F8E;
+}
+
+.table_btn{
+    padding: .1rem .3rem;
+    max-height: 50px;
+    max-width: 50px;
+    border-width: 5px;
 }
 
 /* footer */

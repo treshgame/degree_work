@@ -7,6 +7,7 @@ import dev.university.degree.repositories.EmployeeRepository;
 import dev.university.degree.repositories.MedicationRepository;
 import dev.university.degree.repositories.SupplierRepository;
 import dev.university.degree.util.EmployeeStatus;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/owner")
@@ -22,6 +24,7 @@ public class OwnerController{
     private final EmployeeRepository employeeRepository;
     private final SupplierRepository supplierRepository;
     private final MedicationRepository medicationRepository;
+
     public OwnerController(
             EmployeeRepository employeeRepository,
             SupplierRepository supplierRepository,
@@ -72,6 +75,29 @@ public class OwnerController{
     @PostMapping("/add_medication")
     public String addMedication(@ModelAttribute("medication") Medication medication){
         medicationRepository.save(medication);
-        return "redirect:/owner";
+        return "redirect:/owner/add_medication";
+    }
+
+    //Сделать систему поставок
+    @GetMapping("/add_supply")
+    public String addSupplyPage(Model model){
+        model.addAttribute("suppliers", supplierRepository.findAll());
+        model.addAttribute("medications", medicationRepository.findAll());
+        return "owner/add_supply";
+    }
+
+    @PostMapping("/add_supply")
+    public String addSupply(HttpServletRequest servletRequest){
+        System.out.println("Servlet request:");
+
+        servletRequest.getParameterMap().entrySet().forEach((stringEntry -> {
+            System.out.println(stringEntry.getKey() + " " + Arrays.toString(stringEntry.getValue()));
+        }));
+        return "redirect:/owner/add_supply";
+    }
+
+    @GetMapping("/all_supplies")
+    public String allSupplies(){
+        return "owner/add_supply";
     }
 }

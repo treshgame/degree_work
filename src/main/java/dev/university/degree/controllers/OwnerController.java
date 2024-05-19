@@ -1,13 +1,10 @@
 package dev.university.degree.controllers;
 
-import dev.university.degree.entities.Employee;
-import dev.university.degree.entities.Medication;
-import dev.university.degree.entities.Supplier;
-import dev.university.degree.repositories.EmployeeRepository;
-import dev.university.degree.repositories.MedicationRepository;
-import dev.university.degree.repositories.SupplierRepository;
+import dev.university.degree.entities.*;
+import dev.university.degree.repositories.*;
 import dev.university.degree.util.EmployeeStatus;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +12,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/owner")
@@ -24,15 +24,24 @@ public class OwnerController{
     private final EmployeeRepository employeeRepository;
     private final SupplierRepository supplierRepository;
     private final MedicationRepository medicationRepository;
+    private final SupplyRepository supplyRepository;
+    private final SupplyDetailsRepository supplyDetailsRepository;
+    private final MedicationStorageRepository medicationStorageRepository;
 
     public OwnerController(
             EmployeeRepository employeeRepository,
             SupplierRepository supplierRepository,
-            MedicationRepository medicationRepository
+            MedicationRepository medicationRepository,
+            SupplyRepository supplyRepository,
+            SupplyDetailsRepository supplyDetailsRepository,
+            MedicationStorageRepository medicationStorageRepository
     ){
         this.employeeRepository = employeeRepository;
         this.supplierRepository = supplierRepository;
         this.medicationRepository = medicationRepository;
+        this.supplyRepository = supplyRepository;
+        this.supplyDetailsRepository = supplyDetailsRepository;
+        this.medicationStorageRepository = medicationStorageRepository;
     }
 
     @GetMapping({"", "/"})
@@ -87,17 +96,75 @@ public class OwnerController{
     }
 
     @PostMapping("/add_supply")
-    public String addSupply(HttpServletRequest servletRequest){
-        System.out.println("Servlet request:");
+    @Transactional
+    public String addSupply(HttpServletRequest servletRequest) throws SQLException{
+        int amountOfMedications = Integer.parseInt(servletRequest.getParameter("amountOfMedications"));
+        Long supplierId = Long.parseLong(servletRequest.getParameter("supplier"));
 
-        servletRequest.getParameterMap().entrySet().forEach((stringEntry -> {
-            System.out.println(stringEntry.getKey() + " " + Arrays.toString(stringEntry.getValue()));
-        }));
+        System.out.println("-----");
+        Supply newSupply = new Supply();
+        Supplier supplier = supplierRepository.findById(supplierId).orElse(null);
+        if(supplier == null){
+            System.out.println("Ошибка");
+            return "redirect:/owner/add_supply";
+        }
+
+        newSupply.setSupplier(supplier);
+        newSupply.setDate(LocalDate.now());
+        newSupply = supplyRepository.save(newSupply);
+        if(newSupply.getId() == null){
+            throw new SQLException("Ошибка при добавлении поставки");
+        }
+
+        for(int i = 1; i <= amountOfMedications; i++){
+            SupplyDetails supplyDetails = new SupplyDetails();
+            Long medicationId = Long.parseLong(servletRequest.getParameter("medication_" + i));
+            Medication medication = medicationRepository.findById(medicationId).orElse(null);
+            if(medication == null){
+                continue;
+            }
+            double price = Double.parseDouble(servletRequest.getParameter("medication_price_" + i));
+            int amount = Integer.parseInt(servletRequest.getParameter("medication_amount_" + i));
+            supplyDetails.setMedication(medication);
+            supplyDetails.setPricePerAmount(price);
+            supplyDetails.setAmount(amount);
+            supplyDetails.setSupply(newSupply);
+            if(supplyDetailsRepository.save(supplyDetails).getId() == null){
+                throw new SQLException("Ошибка при добавлении деталей поставки");
+            }
+
+            MedicationStorage medicationStorage = medicationStorageRepository.findByMedicationIdAndPrice(
+                    medication.getId(),
+                    supplyDetails.getPricePerAmount()
+            ).orElse(null);
+
+            if(medicationStorage == null){
+                medicationStorage = new MedicationStorage();
+                medicationStorage.setAmount(0);
+                medicationStorage.setMedication(medication);
+                medicationStorage.setSupplyPrice(supplyDetails.getPricePerAmount());
+            }
+
+            medicationStorage.setAmount(medicationStorage.getAmount() + supplyDetails.getAmount());
+            medicationStorageRepository.save(medicationStorage);
+        }
+
         return "redirect:/owner/add_supply";
     }
 
     @GetMapping("/all_supplies")
-    public String allSupplies(){
-        return "owner/add_supply";
+    public String allSupplies(Model model){
+        List<Supply> supplies = supplyRepository.findAll();
+        List<SupplyDetails> supplyDetailsList = supplyDetailsRepository.findAll();
+        model.addAttribute("supplies", supplies);
+        model.addAttribute("supplyDetails", supplyDetailsList);
+        return "owner/all_supplies";
+    }
+
+    @GetMapping("/medication_storage")
+    public String medicationStorage(Model model){
+        List<MedicationStorage> medicationStorages = medicationStorageRepository.findAll();
+        model.addAttribute("medicationStorages", medicationStorages);
+        return "owner/medication_storage";
     }
 }

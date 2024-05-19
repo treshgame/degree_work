@@ -18,19 +18,19 @@ function add_btn_click(){
     let newRow = $("<tr>").attr("id", "row_" + newAmount);
     let newMedicationInput = $("<td>").append(
         $("<select>").attr("name", "medication_" + newAmount)
-        .attr("id", "medication_" + newAmount)
+        .attr("id", "medication_" + newAmount).prop("required", true)
         .addClass("form-control")
         .append($("#medication_1 > option").clone())
     );
     let newPriceInput = $("<td>").append(
         $("<input>").attr("type", "number").attr("name", "medication_price_" + newAmount)
-        .attr("id", "medication_price_" + newAmount)
+        .attr("id", "medication_price_" + newAmount).prop("required", true)
         .attr("min", "0.01").attr("step", "0.01")
         .addClass("form-control")
     );
     let newAmountInput = $("<td>").append(
         $("<input>").attr("type", "number").attr("name", "medication_amount_" + newAmount)
-        .attr("id", "medication_amount_" + newAmount)
+        .attr("id", "medication_amount_" + newAmount).prop("required", true)
         .attr("min", "1").attr("step", "1")
         .addClass("form-control")
     );
@@ -45,7 +45,7 @@ function add_btn_click(){
         .click(remove_btn_click)
     );
 
-    newRow.append(newMedicationInput).append(newPriceInput).append(newAmountInput)
+    newRow.append(newMedicationInput).append(newAmountInput).append(newPriceInput)
     .append(newAddBtn).append(newRemoveBtn);
     $("tbody").append(newRow)
 }

@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 public class DegreeApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(DegreeApplication.class, args);
 	}
-
 }

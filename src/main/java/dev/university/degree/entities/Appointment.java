@@ -27,4 +27,15 @@ public class Appointment {
     public Appointment(){
         status = AppointmentStatus.WAITING;
     }
+
+    public String getFormattedTime(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(appointmentTime.getHour());
+        stringBuilder.append(":");
+        stringBuilder.append(appointmentTime.getMinute());
+        if(appointmentTime.getMinute() == 0){
+            stringBuilder.append(0);
+        }
+        return stringBuilder.toString();
+    }
 }

@@ -10,9 +10,8 @@ public class Journal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Animal animal;
-    @ManyToOne
-    private Employee employee;
-    private String type;
+    private Appointment appointment;
+    private String diagnosis;
+    private String prescription;
     private String comment;
 }

@@ -11,20 +11,24 @@
 <div th:insert="~{common/vet_header.html :: header}"></div>
 <section class="body">
     <h1>Список приемов</h1>
-    <table class="table">
-        <thead>
+    <div class="container">
+        <table class="table">
+            <thead>
             <th>Кличка</th>
             <th>Вид</th>
+            <th>Время приема</th>
             <th></th>
-        </thead>
-        <tbody>
-            <tr th:each="appointment :: ${appointments}">
+            </thead>
+            <tbody>
+            <tr th:each="appointment : ${appointments}">
                 <td th:text="${appointment.animal.kind}"></td>
                 <td th:text="${appointment.animal.name}"></td>
-                <td><a href="#"><button class="btn">Начать прием</button></a></td>
+                <td th:text="${appointment.appointmentDate} + ' ' + ${appointment.getFormattedTime()}"></td>
+                <td><a th:href="@{/vet/} + ${appointment.id}"><button class="btn">Начать прием</button></a></td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </section>
 <div th:insert="~{common/footer.html :: footer}"></div>
 </body>

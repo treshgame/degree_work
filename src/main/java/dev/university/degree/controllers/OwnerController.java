@@ -27,6 +27,7 @@ public class OwnerController{
     private final SupplyRepository supplyRepository;
     private final SupplyDetailsRepository supplyDetailsRepository;
     private final MedicationStorageRepository medicationStorageRepository;
+    private final ProcedureRepository procedureRepository;
 
     public OwnerController(
             EmployeeRepository employeeRepository,
@@ -34,7 +35,8 @@ public class OwnerController{
             MedicationRepository medicationRepository,
             SupplyRepository supplyRepository,
             SupplyDetailsRepository supplyDetailsRepository,
-            MedicationStorageRepository medicationStorageRepository
+            MedicationStorageRepository medicationStorageRepository,
+            ProcedureRepository procedureRepository
     ){
         this.employeeRepository = employeeRepository;
         this.supplierRepository = supplierRepository;
@@ -42,6 +44,7 @@ public class OwnerController{
         this.supplyRepository = supplyRepository;
         this.supplyDetailsRepository = supplyDetailsRepository;
         this.medicationStorageRepository = medicationStorageRepository;
+        this.procedureRepository = procedureRepository;
     }
 
     @GetMapping({"", "/"})
@@ -166,5 +169,11 @@ public class OwnerController{
         List<MedicationStorage> medicationStorages = medicationStorageRepository.findAll();
         model.addAttribute("medicationStorages", medicationStorages);
         return "owner/medication_storage";
+    }
+
+    @GetMapping("/procedures")
+    public String procedures(Model model){
+        model.addAttribute("procedures", procedureRepository.findAll());
+        return "owner/procedures";
     }
 }

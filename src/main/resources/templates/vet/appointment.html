@@ -41,18 +41,30 @@
                     <div class="form-section">
                         <label>Препарат</label>
                         <select class="form-control" id="new_procedure_medication">
-                            <option value="">--</option>
                             <option th:each="medication : ${medications}"
                                     th:text="${medication.medication.name}"
                                     th:value="${medication.id}">
                             </option>
                         </select>
-                        <input type="number" id="new_medication_amount" step="1" min="1">
+                    </div>
+                    <div class="form-section">
+                        <label>Количество</label>
+                        <input type="number" class="form-control" id="new_medication_amount" step="0.01">
+                        <button id="new_procedure_btn" class="btn">добавить процедуру</button>
                     </div>
                     <div class="form-section" id="procedures">
-
+                        <table class="table">
+                            <thead>
+                                <th>Процедура</th>
+                                <th>Препарат</th>
+                                <th>Количество</th>
+                                <th></th>
+                            </thead>
+                            <tbody id="procedures_tbody">
+                                <input id="procedures_amount" value="0" name="procedures_amount" hidden>
+                            </tbody>
+                        </table>
                     </div>
-                    <button class="btn">добавить процедуру</button>
                 </div>
             </div>
             <div class="form-section">

@@ -1,9 +1,9 @@
 package dev.university.degree.repositories;
 
-import dev.university.degree.entities.Bill;
+import dev.university.degree.entities.Receipt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BillRepository extends JpaRepository<Bill, Long> {
+public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
 }

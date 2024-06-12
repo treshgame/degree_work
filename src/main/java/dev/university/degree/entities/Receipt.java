@@ -1,17 +1,19 @@
 package dev.university.degree.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class Bill {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Receipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private double sum;
     @ManyToOne
-    private Client client;
-    @ManyToOne
-    private Employee employee;
+    private Appointment appointment;
 }

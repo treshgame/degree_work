@@ -12,16 +12,17 @@
 <section class="body">
     <h1 th:text="'Прием животного: ' + ${appointment.animal.kind} + ' ' + ${appointment.animal.name}"></h1>
     <div class="container">
-        <form class="form">
+        <form class="form" method="post" th:action="@{/vet/appointment-receipt}">
+            <input type="text" name="appointment_id" th:value="${appointment.id}" hidden>
             <div class="appointment-form">
                 <div class="appointment-form-item">
                     <div class="form-section">
                         <label>Диагноз</label>
-                        <input type="text" name="diagnosis" class="form-control">
+                        <input type="text" name="diagnosis" class="form-control" required>
                     </div>
                     <div class="form-section">
                         <label>Назначение</label>
-                        <input type="text" name="prescription" class="form-control">
+                        <textarea type="text" name="prescription" class="form-control" required></textarea>
                     </div>
                     <div class="form-section">
                         <label>Комментарий</label>
@@ -43,14 +44,17 @@
                         <select class="form-control" id="new_procedure_medication">
                             <option th:each="medication : ${medications}"
                                     th:text="${medication.medication.name}"
-                                    th:value="${medication.id}">
+                                    th:value="${medication.id}"
+                                    th:attr="data-amount=${medication.amount}"
+                                    th:id="'medication_option_' + ${medication.id}"
+                            >
                             </option>
                         </select>
                     </div>
                     <div class="form-section">
                         <label>Количество</label>
                         <input type="number" class="form-control" id="new_medication_amount" step="0.01">
-                        <button id="new_procedure_btn" class="btn">добавить процедуру</button>
+                        <button type="button" id="new_procedure_btn" class="btn">добавить процедуру</button>
                     </div>
                     <div class="form-section" id="procedures">
                         <table class="table">
@@ -61,7 +65,7 @@
                                 <th></th>
                             </thead>
                             <tbody id="procedures_tbody">
-                                <input id="procedures_amount" value="0" name="procedures_amount" hidden>
+                                <input type="number" id="procedures_amount" value="0" name="procedures_amount" step="1" hidden>
                             </tbody>
                         </table>
                     </div>

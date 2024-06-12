@@ -2,6 +2,7 @@ package dev.university.degree.entities;
 
 import dev.university.degree.util.EmployeeStatus;
 import dev.university.degree.util.Job;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Employee {
     private String middleName;
     private Job job;
     private LocalDate jobStart;
+    @Nullable
     private LocalDate timeQuited;
     private EmployeeStatus status;
 }

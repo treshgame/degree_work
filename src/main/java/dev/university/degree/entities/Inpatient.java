@@ -1,5 +1,6 @@
 package dev.university.degree.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +14,9 @@ public class Inpatient {
     private Long id;
     @ManyToOne
     private Animal animal;
+    @ManyToOne
+    private Cage cage;
     private LocalDate dateOfArrival;
+    @Nullable
     private LocalDate dateOfLeave;
 }

@@ -1,5 +1,6 @@
 package dev.university.degree.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,5 +14,6 @@ public class Journal {
     private Appointment appointment;
     private String diagnosis;
     private String prescription;
+    @Nullable
     private String comment;
 }

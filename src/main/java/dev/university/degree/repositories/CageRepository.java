@@ -1,9 +1,9 @@
 package dev.university.degree.repositories;
 
-import dev.university.degree.entities.Prescription;
+import dev.university.degree.entities.Cage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
+public interface CageRepository extends JpaRepository<Cage, Long> {
 }

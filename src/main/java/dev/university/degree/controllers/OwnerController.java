@@ -5,12 +5,10 @@ import dev.university.degree.repositories.*;
 import dev.university.degree.util.EmployeeStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
@@ -28,6 +26,7 @@ public class OwnerController{
     private final SupplyDetailsRepository supplyDetailsRepository;
     private final MedicationStorageRepository medicationStorageRepository;
     private final ProcedureRepository procedureRepository;
+    private final UserRepository userRepository;
 
     public OwnerController(
             EmployeeRepository employeeRepository,
@@ -36,7 +35,8 @@ public class OwnerController{
             SupplyRepository supplyRepository,
             SupplyDetailsRepository supplyDetailsRepository,
             MedicationStorageRepository medicationStorageRepository,
-            ProcedureRepository procedureRepository
+            ProcedureRepository procedureRepository,
+            UserRepository userRepository
     ){
         this.employeeRepository = employeeRepository;
         this.supplierRepository = supplierRepository;
@@ -45,6 +45,7 @@ public class OwnerController{
         this.supplyDetailsRepository = supplyDetailsRepository;
         this.medicationStorageRepository = medicationStorageRepository;
         this.procedureRepository = procedureRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping({"", "/"})
@@ -175,5 +176,22 @@ public class OwnerController{
     public String procedures(Model model){
         model.addAttribute("procedures", procedureRepository.findAll());
         return "owner/procedures";
+    }
+
+    @GetMapping("/addUser")
+    public String showAddUserForm(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("employees", employeeRepository.findAll());
+        return "addUser";
+    }
+
+    @PostMapping("/addUser")
+    public String addUser(@ModelAttribute User user, @RequestParam Long employeeId, @RequestParam String password, PasswordEncoder passwordEncoder) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        user.setEmployee(employee);
+        user.setPassword(passwordEncoder.encode(password));  // Encode the password before saving
+        userRepository.save(user);
+        return "redirect:/owner";
     }
 }

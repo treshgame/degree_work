@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пользователя</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="~{common/owner_header.html :: header}"></div>
+<section class="body">
+    <h1>Add New User</h1>
+    <form th:action="@{/owner/addUser}" th:object="${user}" method="post">
+        <div class="form-section">
+            <label for="username">Username:</label>
+            <input type="text" id="username" class="form-control" th:field="*{username}" required />
+        </div>
+        <div class="form-section">
+            <label for="password">Password:</label>
+            <input type="password" id="password" class="form-control" name="password" required />
+        </div>
+        <div class="form-section">
+            <label for="employee">Employee:</label>
+            <select id="employee" class="form-control" name="employeeId">
+                <option th:each="employee : ${employees}"
+                        th:value="${employee.id}"
+                        th:text="${employee.firstName} + ' ' + ${employee.surname}"></option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn">Submit</button>
+        </div>
+    </form>
+</section>
+<div th:insert="~{common/footer.html :: footer}"></div>
+</body>
+</html>

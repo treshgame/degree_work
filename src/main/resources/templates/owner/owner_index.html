@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
-    <link th:href="@{/css/common.css}" rel="stylesheet">
     <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
 </head>
 <body>
-<div th:insert="~{common/owner_header.html :: header}"></div>
-<div th:insert="~{common/footer.html :: footer}"></div>
+<div class="wrapper">
+    <div th:insert="~{common/owner_header.html :: header}"></div>
+    <section class="body">
+
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 </body>
 </html>

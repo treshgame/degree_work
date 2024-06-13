@@ -7,34 +7,32 @@
     <link th:href="@{/css/common.css}" rel="stylesheet">
 </head>
 <body>
-<div th:insert="~{common/owner_header.html :: header}"></div>
-<section class="body">
-    <div class="container">
-        <h1>Добавить лекарство</h1>
-        <div class="add_form">
-            <form th:action="@{/owner/add_medication}" th:object="${medication}" method="post">
-                <div class="form-section">
-                    <label>название</label>
-                    <input type="text" class="form-control" th:field="*{name}">
-                </div>
-                <div class="">
-                    <label>единица измерения</label>
-                    <select class="form-control" th:field="*{unit}">
-                        <option th:each="unit : ${T(dev.university.degree.util.Unit).values()}"
-                                th:value="${unit}" th:text="${unit.getUnitName()}"></option>
-                    </select>
-                </div>
-                <div class="form-section">
-                    <label>количество на складе</label>
-                    <input type="number" class="form-control" th:field="*{amount}" min="0" step="1">
-                </div>
-                <div class="fom-section">
-                    <input type="submit" class="btn" value="добавить">
-                </div>
-            </form>
+<div class="wrapper">
+    <div th:insert="~{common/owner_header.html :: header}"></div>
+    <section class="body">
+        <div class="container">
+            <h1>Добавить медикамента</h1>
+            <div class="add_form">
+                <form th:action="@{/owner/add_medication}" th:object="${medication}" method="post">
+                    <div class="form-section">
+                        <label>название</label>
+                        <input type="text" class="form-control" th:field="*{name}">
+                    </div>
+                    <div class="form-section">
+                        <label>единица измерения</label>
+                        <select class="form-control" th:field="*{unit}">
+                            <option th:each="unit : ${T(dev.university.degree.util.Unit).values()}"
+                                    th:value="${unit}" th:text="${unit.getUnitName()}"></option>
+                        </select>
+                    </div>
+                    <div class="fom-section">
+                        <input type="submit" class="btn" value="добавить">
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
-<div th:insert="~{common/footer.html :: footer}"></div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 </body>
 </html>

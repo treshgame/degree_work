@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -21,4 +24,5 @@ public class Cage {
     private CageSize cageSize;
     private double pricePerDay;
     private CageStatus cageStatus;
+    private LocalDateTime lastCleaningTime;
 }

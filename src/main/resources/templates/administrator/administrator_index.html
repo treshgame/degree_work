@@ -7,10 +7,12 @@
     <title>Ресепшн</title>
 </head>
 <body>
-<div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
-<section class="body">
-    <h1 class="head">Test header</h1>
-</section>
-<div th:insert="~{common/footer.html :: footer}"></div>
+<div class="wrapper">
+    <div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
+    <section class="body">
+        <h1 class="head">Главная страница</h1>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 </body>
 </html>

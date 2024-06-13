@@ -8,26 +8,27 @@
     <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 </head>
 <body>
-<div th:insert="~{common/owner_header.html :: header}"></div>
-<section class="body">
-    <h1>Новая поставка</h1>
-    <a th:href="@{/owner/all_supplies}"><button class="btn">Все поставки</button></a>
-    <div class="container">
-        <div class="add_form">
-            <form th:action="@{/owner/add_supply}" method="post" onsubmit="return confirm('Вы уверены, что хотите добавить поставку?');">
-                <input type="hidden" id="rowAmount" name="amountOfMedications" value="1">
-                <div class="form-section">
-                    <label>Поставщик</label>
-                    <select name="supplier" class="form-control" required>
-                        <option value="">--</option>
-                        <option th:each="supplier : ${suppliers}"
-                                th:text="${supplier.name}" th:value="${supplier.id}"></option>
-                    </select>
-                </div>
-                <div class="form-section">
-                    <label>Поставляемые лекарства</label>
-                    <table class="table table-striped" id="medications_table">
-                        <thead>
+<div class="wrapper">
+    <div th:insert="~{common/owner_header.html :: header}"></div>
+    <section class="body">
+        <div class="container">
+            <h1>Новая поставка</h1>
+            <a th:href="@{/owner/all_supplies}"><button class="btn">Все поставки</button></a>
+            <div class="add_form">
+                <form th:action="@{/owner/add_supply}" method="post" onsubmit="return confirm('Вы уверены, что хотите добавить поставку?');">
+                    <input type="hidden" id="rowAmount" name="amountOfMedications" value="1">
+                    <div class="form-section">
+                        <label>Поставщик</label>
+                        <select name="supplier" class="form-control" required>
+                            <option value="">--</option>
+                            <option th:each="supplier : ${suppliers}"
+                                    th:text="${supplier.name}" th:value="${supplier.id}"></option>
+                        </select>
+                    </div>
+                    <div class="form-section">
+                        <label>Поставляемые лекарства</label>
+                        <table class="table table-striped" id="medications_table">
+                            <thead>
                             <tr class="text-center">
                                 <th>Лекарство</th>
                                 <th>Количество</th>
@@ -35,32 +36,33 @@
                                 <th></th>
                                 <th></th>
                             </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="row_1">
-                            <td>
-                                <select name="medication_1" class="form-control" id="medication_1" required>
-                                    <option value="">--</option>
-                                    <option th:each="medication : ${medications}"
-                                    th:text="${medication.name} + ' (' + ${medication.unit.unitName} +')'" th:value="${medication.id}"></option>
-                                </select>
-                            </td>
-                            <td><input type="number" class="form-control" name="medication_amount_1" id="medication_amount_1" min="0" step="1" data-order="1" required></td>
-                            <td><input type="number" class="form-control" name="medication_price_1" id="medication_price_1" min="1" step="0.01" data-order="1" required></td>
-                            <td><button type="button" class="btn add_btn table_btn">+</button></td>
-                            <td><button type="button" id="remove_btn_1" data-row="1" class="btn remove_btn table_btn">-</button></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="form-section">
-                    <input type="submit" class="btn" value="добавить">
-                </div>
-            </form>
+                            </thead>
+                            <tbody>
+                            <tr id="row_1">
+                                <td>
+                                    <select name="medication_1" class="form-control" id="medication_1" required>
+                                        <option value="">--</option>
+                                        <option th:each="medication : ${medications}"
+                                                th:text="${medication.name} + ' (' + ${medication.unit.unitName} +')'" th:value="${medication.id}"></option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control" name="medication_amount_1" id="medication_amount_1" min="0" step="1" data-order="1" required></td>
+                                <td><input type="number" class="form-control" name="medication_price_1" id="medication_price_1" min="1" step="0.01" data-order="1" required></td>
+                                <td><button type="button" class="btn add_btn table_btn">+</button></td>
+                                <td><button type="button" id="remove_btn_1" data-row="1" class="btn remove_btn table_btn">-</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-section">
+                        <input type="submit" class="btn" value="добавить">
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
-<div th:insert="~{common/footer.html :: footer}"></div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 <script th:src="@{/js/add_supply.js}" type="text/javascript"></script>
 </body>
 </html>

@@ -8,45 +8,48 @@
     <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 </head>
 <body>
-<div th:insert="~{common/owner_header.html :: header}"></div>
-<section class="body">
-    <h1>Процедуры</h1>
-    <div class="body-item">
-        <h2>Добавить</h2>
-        <form class="form" id="new-procedure-form" method="post">
-            <div class="form-section">
-                <label>Название процедуры</label>
-                <input type="text" class="form-control" id="new-procedure-name" name="name">
-            </div>
-            <div class="form-section">
-                <label>Цена процедуры</label>
-                <input type="number" class="form-control" id="new-procedure-price" step="0.01" min="0.01">
-            </div>
-            <input type="submit" class="btn" value="Добавить">
-        </form>
-    </div>
-    <div class="body-item">
-        <h2>Список процедур</h2>
-        <table class="table table-bordered">
-            <thead>
+<div class="wrapper">
+
+    <div th:insert="~{common/owner_header.html :: header}"></div>
+    <section class="body">
+        <h1>Процедуры</h1>
+        <div class="body-item">
+            <h2>Добавить</h2>
+            <form class="form" id="new-procedure-form" method="post">
+                <div class="form-section">
+                    <label>Название процедуры</label>
+                    <input type="text" class="form-control" id="new-procedure-name" name="name">
+                </div>
+                <div class="form-section">
+                    <label>Цена процедуры</label>
+                    <input type="number" class="form-control" id="new-procedure-price" step="0.01" min="0.01">
+                </div>
+                <input type="submit" class="btn" value="Добавить">
+            </form>
+        </div>
+        <div class="body-item">
+            <h2>Список процедур</h2>
+            <table class="table table-bordered">
+                <thead>
                 <th>Название</th>
                 <th>Цена</th>
                 <th></th>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr th:each="procedure : ${procedures}">
                     <form class="procedure-update-form" th:attr="data-id=${procedure.id}">
-<!--                        <input type="number" class="procedure_id" th:value="${procedure.id}" hidden>-->
+                        <!--                        <input type="number" class="procedure_id" th:value="${procedure.id}" hidden>-->
                         <td><input type="text" th:value="${procedure.name}" class="form-control" th:id="'procedure_name_' + ${procedure.id}"></td>
                         <td><input type="number" th:value="${procedure.price}" class="form-control" th:id="'procedure_price_' + ${procedure.id}"></td>
                         <td><input type="submit" class="btn" value="Обновить"></td>
                     </form>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
-<div th:insert="~{common/footer.html :: footer}"></div>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 <script th:src="@{/js/procedures.js}" type="text/javascript"></script>
 </body>
 </html>

@@ -21,5 +21,4 @@ public class Medication {
     private Long id;
     private String name;
     private Unit unit;
-    private int amount;
 }

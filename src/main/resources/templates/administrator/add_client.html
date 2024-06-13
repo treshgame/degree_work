@@ -7,38 +7,39 @@
     <link th:href="@{/css/common.css}" rel="stylesheet">
 </head>
 <body>
-<div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
-<section class="body">
-    <h1>Добавление клиента</h1>
-    <div class="add_form">
-        <form th:action="@{/administrator/add_client}" th:object="${client}" method="post">
-            <div class="form-section">
-                <label>имя</label>
-                <input type="text" class="form-control" th:field="*{firstName}" placeholder="Иван">
-            </div>
-            <div class="form-section">
-                <label>фамилия</label>
-                <input type="text" class="form-control" th:field="*{surname}" placeholder="Иванов">
-            </div>
-            <div class="form-section">
-                <label>отчество</label>
-                <input type="text" class="form-control" th:field="*{middleName}" placeholder="Иванович">
-            </div>
-            <div class="form-section">
-                <label>номер телефона</label>
-                <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="+7 (xxx)-xxx-xx-xx">
-            </div>
-            <div class="form-section">
-                <label>Email (необязательно)</label>
-                <input type="email" class="form-control" th:field="*{email}" placeholder="clienntemail@email.domen">
-            </div>
-            <div class="form-section">
-                <input type="submit" class="btn" value="добавить">
-                <input type="submit" class="btn" value="добавить">
-            </div>
-        </form>
-    </div>
-</section>
-<div th:insert="~{common/footer.html :: footer}"></div>
+<div class="wrapper">
+    <div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
+    <section class="body">
+        <div class="add_form">
+            <h1>Добавление клиента</h1>
+            <form th:action="@{/administrator/add_client}" th:object="${client}" method="post">
+                <div class="form-section">
+                    <label>имя</label>
+                    <input type="text" class="form-control" th:field="*{firstName}" placeholder="Иван">
+                </div>
+                <div class="form-section">
+                    <label>фамилия</label>
+                    <input type="text" class="form-control" th:field="*{surname}" placeholder="Иванов">
+                </div>
+                <div class="form-section">
+                    <label>отчество</label>
+                    <input type="text" class="form-control" th:field="*{middleName}" placeholder="Иванович">
+                </div>
+                <div class="form-section">
+                    <label>номер телефона</label>
+                    <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="+7 (xxx)-xxx-xx-xx">
+                </div>
+                <div class="form-section">
+                    <label>Email (необязательно)</label>
+                    <input type="email" class="form-control" th:field="*{email}" placeholder="clienntemail@email.domen">
+                </div>
+                <div class="form-section">
+                    <input type="submit" class="btn" value="добавить">
+                </div>
+            </form>
+        </div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 </body>
 </html>

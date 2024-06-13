@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                     auth -> auth
                             .requestMatchers("/css/**").permitAll()
-                            .anyRequest().authenticated()
+                            .anyRequest().permitAll()
                 ).formLogin(
                     form -> form.loginProcessingUrl("/login")
                             .defaultSuccessUrl("/").permitAll()

@@ -7,30 +7,33 @@
   <link th:href="@{/css/common.css}" rel="stylesheet">
 </head>
 <body>
-<div th:insert="~{common/owner_header.html :: header}"></div>
-<section class="body">
-  <h1>Склад лекарств</h1>
-  <a th:href="@{/owner/add_supply}"><button class="btn">Новая поставка</button></a>
-  <div class="container">
-    <table class="table">
-      <thead>
+<div class="wrapper">
+
+  <div th:insert="~{common/owner_header.html :: header}"></div>
+  <section class="body">
+    <h1>Склад лекарств</h1>
+    <a th:href="@{/owner/add_supply}"><button class="btn">Новая поставка</button></a>
+    <div class="container">
+      <table class="table">
+        <thead>
         <tr>
           <th>Лекарство</th>
           <th>Количество</th>
           <th>Цена за поставку</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <tr th:each="medicationStorage : ${medicationStorages}">
           <td th:text="${medicationStorage.medication.name} + ' (' + ${medicationStorage.medication.unit.unitName} + ')'"></td>
           <td th:text="${medicationStorage.amount}"></td>
           <td th:text="${medicationStorage.supplyPrice}"></td>
         </tr>
-      </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
 
-</section>
-<div th:insert="~{common/footer.html :: footer}"></div>
+  </section>
+  <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 </body>
 </html>

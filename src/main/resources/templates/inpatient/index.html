@@ -17,7 +17,9 @@
                 <thead>
                 <tr>
                     <th>Имя животного</th>
+                    <th>Размер клетки</th>
                     <th>Дата прибытия</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -25,9 +27,11 @@
                 <tbody>
                 <tr th:each="inpatient : ${inpatients}">
                     <td th:text="${inpatient.animal.name}"></td>
-                    <td th:text="${inpatient.arrivalDate}"></td>
+                    <td th:text="${inpatient.cage.cageSize.size}"></td>
+                    <td th:text="${inpatient.dateOfArrival}"></td>
                     <td><button class="btn clean_btn">Клетка убрана</button></td>
                     <td><button class="btn procedure_btn">Новая процедура</button></td>
+                    <td><button class="btn procedure_btn">Животное выписано</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -36,7 +40,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Имя животного</th>
+                    <th>Размер клетки</th>
                     <th>Дата прибытия</th>
                     <th></th>
                     <th></th>
@@ -44,8 +48,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="freeCage : ${freeCages}">
-                    <td th:text="${freeCage.cageSize.}"></td>
-                    <td th:text="${freeCage.arrivalDate}"></td>
+                    <td th:text="${freeCage.cageSize.size}"></td>
+                    <td th:text="${freeCage.getFormattedDateTime()}"></td>
                     <td><button class="btn clean_btn" th:attr="data-id=${freeCage.id}">Клетка убрана</button></td>
                 </tr>
                 </tbody>

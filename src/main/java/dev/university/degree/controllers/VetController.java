@@ -27,6 +27,7 @@ public class VetController {
     JournalRepository journalRepository;
     ReceiptRepository receiptRepository;
 
+
     public VetController(
             AppointmentRepository appointmentRepository,
             ProcedureRepository procedureRepository,
@@ -143,4 +144,5 @@ public class VetController {
         appointmentRepository.save(appointment);
         return "redirect:/vet";
     }
+
 }

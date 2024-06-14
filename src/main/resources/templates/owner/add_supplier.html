@@ -30,6 +30,23 @@
                     <input type="submit" class="btn" value="добавить">
                 </div>
             </form>
+            <h2>Список поставщиков</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Номер телефона</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="supplier : ${suppliers}">
+                    <td th:text="${supplier.name}"></td>
+                    <td th:text="${supplier.phoneNumber}"></td>
+                    <td th:text="${supplier.email}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>

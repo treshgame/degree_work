@@ -1,17 +1,16 @@
 package dev.university.degree.util;
 
+import lombok.Getter;
+
+@Getter
 public enum Job {
     VET("Ветеринар"),
     ADMINISTRATOR("Администратор"),
     INPATIENT("Работник стационара");
 
-    private String name;
+    private final String name;
 
     Job(String name){
         this.name = name;
-    }
-
-    public String getName(){
-        return name;
     }
 }

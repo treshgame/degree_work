@@ -2,6 +2,7 @@ package dev.university.degree.controllers;
 
 import dev.university.degree.entities.*;
 import dev.university.degree.repositories.*;
+import dev.university.degree.util.CageStatus;
 import dev.university.degree.util.EmployeeStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -13,20 +14,22 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("/owner")
 public class OwnerController{
-    private final EmployeeRepository employeeRepository;
-    private final SupplierRepository supplierRepository;
-    private final MedicationRepository medicationRepository;
-    private final SupplyRepository supplyRepository;
-    private final SupplyDetailsRepository supplyDetailsRepository;
-    private final MedicationStorageRepository medicationStorageRepository;
-    private final ProcedureRepository procedureRepository;
-    private final UserRepository userRepository;
+    EmployeeRepository employeeRepository;
+    SupplierRepository supplierRepository;
+    MedicationRepository medicationRepository;
+    SupplyRepository supplyRepository;
+    SupplyDetailsRepository supplyDetailsRepository;
+    MedicationStorageRepository medicationStorageRepository;
+    ProcedureRepository procedureRepository;
+    UserRepository userRepository;
+    CageRepository cageRepository;
 
     public OwnerController(
             EmployeeRepository employeeRepository,
@@ -36,7 +39,8 @@ public class OwnerController{
             SupplyDetailsRepository supplyDetailsRepository,
             MedicationStorageRepository medicationStorageRepository,
             ProcedureRepository procedureRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            CageRepository cageRepository
     ){
         this.employeeRepository = employeeRepository;
         this.supplierRepository = supplierRepository;
@@ -46,6 +50,7 @@ public class OwnerController{
         this.medicationStorageRepository = medicationStorageRepository;
         this.procedureRepository = procedureRepository;
         this.userRepository = userRepository;
+        this.cageRepository = cageRepository;
     }
 
     @GetMapping({"", "/"})
@@ -56,6 +61,7 @@ public class OwnerController{
     @GetMapping("/add_employee")
     public String addEmployeePage(Model model){
         model.addAttribute("employee", new Employee());
+        model.addAttribute("employees", employeeRepository.findAll());
         return "owner/add_employee";
     }
 
@@ -64,11 +70,12 @@ public class OwnerController{
         employee.setJobStart(LocalDate.now());
         employee.setStatus(EmployeeStatus.EMPLOYED);
         employeeRepository.save(employee);
-        return "redirect:/owner";
+        return "redirect:/owner/add_employee";
     }
 
     @GetMapping("/add_supplier")
     public String addSupplierPage(Model model){
+        model.addAttribute("suppliers", supplierRepository.findAll());
         model.addAttribute("supplier", new Supplier());
         return "owner/add_supplier";
     }
@@ -76,7 +83,7 @@ public class OwnerController{
     @PostMapping("/add_supplier")
     public String addSupplier(@ModelAttribute("supplier") Supplier supplier){
         supplierRepository.save(supplier);
-        return "redirect:/owner";
+        return "redirect:/owner/add_supplier";
     }
 
     @GetMapping("/add_medication")
@@ -91,7 +98,6 @@ public class OwnerController{
         return "redirect:/owner/add_medication";
     }
 
-    //Сделать систему поставок
     @GetMapping("/add_supply")
     public String addSupplyPage(Model model){
         model.addAttribute("suppliers", supplierRepository.findAll());
@@ -193,5 +199,20 @@ public class OwnerController{
         user.setPassword(passwordEncoder.encode(password));  // Encode the password before saving
         userRepository.save(user);
         return "redirect:/owner";
+    }
+
+    @GetMapping("/add_cage")
+    public String showAddCageForm(Model model) {
+        model.addAttribute("cages", cageRepository.findAll());
+        model.addAttribute("cage", new Cage());
+        return "owner/add_cage";
+    }
+
+    @PostMapping("/add_cage")
+    public String addCage(Cage cage) {
+        cage.setLastCleaningTime(LocalDateTime.now());
+        cage.setCageStatus(CageStatus.FREE);
+        cageRepository.save(cage);
+        return "redirect:/owner/add_cage";  // Redirect to a list or another appropriate page
     }
 }

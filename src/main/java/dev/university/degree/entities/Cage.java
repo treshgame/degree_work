@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Data
@@ -25,4 +26,11 @@ public class Cage {
     private double pricePerDay;
     private CageStatus cageStatus;
     private LocalDateTime lastCleaningTime;
+
+    public String getFormattedDateTime(){
+        return lastCleaningTime.format(DateTimeFormatter.ISO_LOCAL_DATE)
+                + " "
+                + lastCleaningTime.format(DateTimeFormatter.ISO_LOCAL_TIME).substring(0, 8);
+    }
+
 }

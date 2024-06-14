@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Добавить клетку</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
 </head>
 <body>
-
+<div class="wrapper">
+    <div th:insert="~{common/owner_header.html :: header}"></div>
+    <section class="body">
+        <div class="add_form">
+            <h1>Добавить клетку</h1>
+            <form th:action="@{/owner/add_cage}" th:object="${cage}" method="post">
+                <div class="form-section">
+                    <label>Размер клетки</label>
+                    <select th:field="*{cageSize}" class="form-control">
+                        <option th:each="size : ${T(dev.university.degree.util.CageSize).values()}"
+                                th:value="${size}" th:text="${size.size}"></option>
+                    </select>
+                </div>
+                <div class="form-section">
+                    <label>Цена за день</label>
+                    <input type="number" step="0.01" class="form-control" th:field="*{pricePerDay}" min="0" placeholder="100.0">
+                </div>
+                <div class="form-section">
+                    <input type="submit" class="btn" value="Добавить">
+                </div>
+            </form>
+            <table class="table table-boarded">
+                <thead>
+                <tr>
+                    <th>Размер клетки</th>
+                    <th>Цена за день</th>
+                    <th>Статус клетки</th>
+                    <th>Время последней уборки</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cage : ${cages}">
+                    <td th:text="${cage.cageSize.size}"></td>
+                    <td th:text="${cage.pricePerDay}"></td>
+                    <td th:text="${cage.cageStatus.status}"></td>
+                    <td th:text="${cage.getFormattedDateTime()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
 </body>
 </html>

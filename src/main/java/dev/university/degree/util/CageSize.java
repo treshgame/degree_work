@@ -8,7 +8,7 @@ public enum CageSize {
     MIDDLE("Средняя"),
     SMALL("Маленькая");
 
-    private String size;
+    private final String size;
 
     CageSize(String size){
         this.size = size;

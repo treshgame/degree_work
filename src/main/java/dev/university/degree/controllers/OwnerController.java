@@ -213,6 +213,6 @@ public class OwnerController{
         cage.setLastCleaningTime(LocalDateTime.now());
         cage.setCageStatus(CageStatus.FREE);
         cageRepository.save(cage);
-        return "redirect:/owner/add_cage";  // Redirect to a list or another appropriate page
+        return "redirect:/owner/add_cage";
     }
 }

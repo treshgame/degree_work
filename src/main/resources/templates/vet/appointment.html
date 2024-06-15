@@ -73,6 +73,27 @@
                         </div>
                     </div>
                 </div>
+                <div th:if="${noCages}">
+                    <div class="form-section">
+                        <label>В стационаре нет места</label>
+                    </div>
+                </div>
+                <div th:else>
+                    <div class="form-section">
+                        <label>Отправить в стационар</label>
+                        <input type="checkbox" name="sendToInpatient" id="sendToInpatient" value="Отправить в стационар" class="form-check-input">
+                    </div>
+                    <div class="form-section" id="cage_selection">
+                        <label>Клетка</label>
+                        <select class="form-control" name="cage">
+                            <option th:each="cage : ${cages}"
+                                    th:if="${cage.cageStatus} == ${T(dev.university.degree.util.CageStatus).FREE}"
+                                    th:value="${cage.id}"
+                                    th:text="${cage.cageSize.size} + ' ' + ${cage.pricePerDay} + 'р'"
+                            ></option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-section">
                     <input type="submit" class="btn" value="Выписать счет">
                 </div>

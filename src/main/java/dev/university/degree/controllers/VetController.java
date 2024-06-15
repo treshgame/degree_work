@@ -3,6 +3,7 @@ package dev.university.degree.controllers;
 import dev.university.degree.entities.*;
 import dev.university.degree.repositories.*;
 import dev.university.degree.util.AppointmentStatus;
+import dev.university.degree.util.CageStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -26,7 +28,8 @@ public class VetController {
     AppointmentProcedureRepository appointmentProcedureRepository;
     JournalRepository journalRepository;
     ReceiptRepository receiptRepository;
-
+    CageRepository cageRepository;
+    InpatientRepository inpatientRepository;
 
     public VetController(
             AppointmentRepository appointmentRepository,
@@ -34,7 +37,9 @@ public class VetController {
             MedicationStorageRepository medicationStorageRepository,
             AppointmentProcedureRepository appointmentProcedureRepository,
             JournalRepository journalRepository,
-            ReceiptRepository receiptRepository
+            ReceiptRepository receiptRepository,
+            CageRepository cageRepository,
+            InpatientRepository inpatientRepository
     ){
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
@@ -42,6 +47,8 @@ public class VetController {
         this.appointmentProcedureRepository = appointmentProcedureRepository;
         this.journalRepository = journalRepository;
         this.receiptRepository = receiptRepository;
+        this.cageRepository = cageRepository;
+        this.inpatientRepository = inpatientRepository;
     }
 
     @GetMapping({"/", ""})
@@ -60,20 +67,28 @@ public class VetController {
         if(appointmentOptional.isEmpty()){
             return "redirect:/vet?error=no-appointment";
         }
+
         Appointment appointment = appointmentOptional.get();
-        if(appointment.getStatus() != AppointmentStatus.WAITING){
+        if(appointment.getStatus() == AppointmentStatus.CANCELLED || appointment.getStatus() == AppointmentStatus.FINISHED){
             return "redirect:/vet";
         }
+
         appointment.setStatus(AppointmentStatus.IN_PROCESS);
         model.addAttribute("appointment", appointmentOptional.get());
         model.addAttribute("procedures", procedureRepository.findAll());
         model.addAttribute("medications", medicationStorageRepository.findAll());
+        List<Cage> cages = cageRepository.findByCageStatus(CageStatus.FREE);
+        if(cages.isEmpty()){
+            model.addAttribute("noCages", true);
+        }else{
+            model.addAttribute("cages", cages);
+        }
         return "vet/appointment";
     }
 
     @PostMapping("/appointment-receipt")
     @Transactional
-    public String appointmentReceipt(HttpServletRequest httpServletRequest){
+    public String appointmentReceipt(HttpServletRequest httpServletRequest) throws SQLException {
         String diagnosis = httpServletRequest.getParameter("diagnosis").trim();
         String prescription = httpServletRequest.getParameter("prescription").trim();
         String comment = httpServletRequest.getParameter("comment").trim();
@@ -104,9 +119,7 @@ public class VetController {
             Long medicationStorageId = Long.parseLong(
                     httpServletRequest.getParameter("procedure_medication_id_" + procedure_number)
             );
-            System.out.println(httpServletRequest.getParameter("procedure_id_" + procedure_number));
-            System.out.println(httpServletRequest.getParameter("procedure_medication_id_" + procedure_number));
-            System.out.println(httpServletRequest.getParameter("procedure_medication_amount_" + procedure_number));
+
             int medicationAmount = Integer.parseInt(
                     httpServletRequest.getParameter("procedure_medication_amount_" + procedure_number)
             );
@@ -142,7 +155,26 @@ public class VetController {
 
         appointment.setStatus(AppointmentStatus.FINISHED);
         appointmentRepository.save(appointment);
+
+        if(httpServletRequest.getParameter("sendToInpatient") != null){
+            if(inpatientRepository.findByAnimalId(appointment.getAnimal().getId()).isPresent()){
+                return "redirect:/vet";
+            }
+            Inpatient inpatient = new Inpatient();
+            inpatient.setAnimal(appointment.getAnimal());
+            inpatient.setDateOfArrival(LocalDate.now());
+            Long cageId = Long.parseLong(
+                    httpServletRequest.getParameter("cage")
+            );
+            Cage cage = cageRepository.findById(cageId).orElse(null);
+            if(cage == null){
+                throw new SQLException("No cage");
+            }
+            inpatient.setCage(cage);
+            inpatientRepository.save(inpatient);
+            cage.setCageStatus(CageStatus.BUSY);
+            cageRepository.save(cage);
+        }
         return "redirect:/vet";
     }
-
 }

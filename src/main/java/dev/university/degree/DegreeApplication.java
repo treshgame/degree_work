@@ -20,11 +20,4 @@ public class DegreeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DegreeApplication.class, args);
 	}
-
-	@Bean
-	ApplicationRunner applicationRunner(){
-		return app -> {
-			System.out.println(jdbcUserDetailsManager.loadUserByUsername("owner"));
-		};
-	}
 }

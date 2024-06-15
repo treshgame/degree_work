@@ -19,6 +19,7 @@
                     <th>Имя животного</th>
                     <th>Размер клетки</th>
                     <th>Дата прибытия</th>
+                    <th>Время последней уборки</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -29,6 +30,7 @@
                     <td th:text="${inpatient.animal.name}"></td>
                     <td th:text="${inpatient.cage.cageSize.size}"></td>
                     <td th:text="${inpatient.dateOfArrival}"></td>
+                    <td th:id="'clean_time_' + ${freeCage.id}" th:text="${inpatient.cage.getFormattedDateTime()}"></td>
                     <td><button class="btn clean_btn">Клетка убрана</button></td>
                     <td><button class="btn procedure_btn">Новая процедура</button></td>
                     <td><button class="btn procedure_btn">Животное выписано</button></td>
@@ -49,7 +51,7 @@
                 <tbody>
                 <tr th:each="freeCage : ${freeCages}">
                     <td th:text="${freeCage.cageSize.size}"></td>
-                    <td th:text="${freeCage.getFormattedDateTime()}"></td>
+                    <td th:id="'clean_time_' + ${freeCage.id}" th:text="${freeCage.getFormattedDateTime()}"></td>
                     <td><button class="btn clean_btn" th:attr="data-id=${freeCage.id}">Клетка убрана</button></td>
                 </tr>
                 </tbody>
@@ -58,5 +60,6 @@
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>
 </div>
+<script th:src="@{/js/inpatient.js}" type="text/javascript"></script>
 </body>
 </html>

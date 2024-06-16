@@ -51,6 +51,12 @@ html, body {
     margin: 0 20px;
 }
 
+.header_menu_list li a:hover {
+    color: #fff;
+    text-decoration: #fff;
+    transition: 0.25s;
+}
+
 /* other common parts */
 .line {
     min-width: 300px;

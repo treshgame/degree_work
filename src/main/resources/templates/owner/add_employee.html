@@ -2,76 +2,96 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Добавить врача</title>
+    <title>Сотрудники</title>
     <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/common.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="wrapper">
     <div th:insert="~{common/owner_header.html :: header}"></div>
     <section class="body">
-        <div class="add_form">
-            <h1>Добавить сотрудника</h1>
-            <form th:action="@{/owner/add_employee}" th:object="${employee}" method="post">
+        <h1>Сотрудники</h1>
+        <div class="body-item">
+            <h2>Добавить</h2>
+            <form class="form" id="new-employee-form" method="post">
                 <div class="form-section">
-                    <label>имя</label>
-                    <input type="text" class="form-control" th:field="*{firstName}" placeholder="Иван" required>
+                    <label>Фамилия</label>
+                    <input type="text" class="form-control" id="new-employee-surname" name="surname" placeholder="Иванов" required>
                 </div>
                 <div class="form-section">
-                    <label>фамилия</label>
-                    <input type="text" class="form-control" th:field="*{surname}" placeholder="Иванов" required>
+                    <label>Имя</label>
+                    <input type="text" class="form-control" id="new-employee-firstName" name="firstName" placeholder="Иван" required>
                 </div>
                 <div class="form-section">
-                    <label>отчество</label>
-                    <input type="text" class="form-control" th:field="*{middleName}" placeholder="Иванович">
+                    <label>Отчество</label>
+                    <input type="text" class="form-control" id="new-employee-middleName" name="middleName" placeholder="Иванович">
                 </div>
                 <div class="form-section">
-                    <label>должность</label>
-                    <select th:field="*{job}" class="form-control">
+                    <label>Должность</label>
+                    <select class="form-control" id="new-employee-job" name="job">
                         <option th:each="job : ${T(dev.university.degree.util.Job).values()}"
                                 th:value="${job}" th:text="${job.getName()}"></option>
                     </select>
                 </div>
                 <div class="form-section">
                     <label>Логин</label>
-                    <input type="text" class="form-control" name="login" placeholder="Логин">
+                    <input type="text" class="form-control" id="new-employee-login" name="login" placeholder="Логин">
                 </div>
                 <div class="form-section">
                     <label>Пароль</label>
-                    <input type="text" class="form-control" name="password" placeholder="Пароль">
+                    <input type="text" class="form-control" id="new-employee-password" name="password" placeholder="Пароль">
                 </div>
                 <div class="form-section">
-                    <input type="submit" class="btn" value="добавить">
+                    <input type="submit" class="btn" value="Добавить">
                 </div>
             </form>
-            <h2>Список сотрудников</h2>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Имя</th>
-                    <th>Фамилия</th>
-                    <th>Отчество</th>
-                    <th>Должность</th>
-                    <th>Дата начала работы</th>
-                    <th>Дата увольнения</th>
-                    <th>Статус</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="employee : ${employees}">
-                    <td th:text="${employee.firstName}"></td>
-                    <td th:text="${employee.surname}"></td>
-                    <td th:text="${employee.middleName}"></td>
-                    <td th:text="${employee.job.getName()}"></td>
-                    <td th:text="${employee.jobStart}"></td>
-                    <td th:text="${employee.timeQuited != null ? employee.timeQuited : 'Работает'}"></td>
-                    <td th:text="${employee.status}"></td>
-                </tr>
-                </tbody>
-            </table>
         </div>
+        <div class="body-item">
+        </div>
+        <h2>Список сотрудников</h2>
+        <table class="table table-bordered">
+            <thead>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Должность</th>
+            <th>Дата начала работы</th>
+            <th>Дата увольнения</th>
+            <th>Статус</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <form class="employee-update-form">
+                    <td><input type="text" th:value="${employee.surname}" class="form-control" th:id="'employee_surname_' + ${employee.id}"></td>
+                    <td><input type="text" th:value="${employee.firstName}" class="form-control" th:id="'employee_firstName_' + ${employee.id}"></td>
+                    <td><input type="text" th:value="${employee.middleName}" class="form-control" th:id="'employee_middleName_' + ${employee.id}"></td>
+                    <td>
+                        <select class="form-control" th:id="'employee_job_' + ${employee.id}">
+                            <option th:each="job : ${T(dev.university.degree.util.Job).values()}"
+                                    th:value="${job}" th:text="${job.getName()}" th:selected="${job == employee.job}"></option>
+                        </select>
+                    </td>
+                    <td th:text="${employee.jobStart}"></td>
+                    <td th:attr="id='employee_timeQuited_td_' + ${employee.id}">
+                        <input type="date" th:if="${employee.timeQuited != null}" th:value="${employee.timeQuited}" class="form-control" th:id="'employee_timeQuited_' + ${employee.id}">
+                        <span th:if="${employee.timeQuited == null}">Работает</span>
+                    </td>
+                    <td>
+                        <select class="form-control employee-status" th:id="'employee_status_' + ${employee.id}" th:data-id="${employee.id}">
+                            <option th:each="status : ${T(dev.university.degree.util.EmployeeStatus).values()}"
+                                    th:value="${status}" th:text="${status.status}" th:selected="${status == employee.status}"></option>
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn update_btn" value="Обновить" th:attr="data-id=${employee.id}">Обновить</button></td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>
 </div>
+<script th:src="@{/js/employees.js}" type="text/javascript"></script>
 </body>
 </html>

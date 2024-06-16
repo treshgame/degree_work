@@ -206,28 +206,28 @@ public class OwnerController{
         return "owner/procedures";
     }
 
-    @GetMapping("/addUser")
+    @GetMapping("/users")
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("employees", employeeRepository.findAll());
-        return "addUser";
+        return "owner/users";
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/add-user")
     public String addUser(@ModelAttribute User user, @RequestParam Long employeeId, @RequestParam String password, PasswordEncoder passwordEncoder) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         user.setEmployee(employee);
         user.setPassword(passwordEncoder.encode(password));  // Encode the password before saving
         userRepository.save(user);
-        return "redirect:/owner";
+        return "redirect:/owner/users";
     }
 
-    @GetMapping("/add_cage")
+    @GetMapping("/cages")
     public String showAddCageForm(Model model) {
         model.addAttribute("cages", cageRepository.findAll());
         model.addAttribute("cage", new Cage());
-        return "owner/add_cage";
+        return "owner/cages";
     }
 
     @PostMapping("/add_cage")
@@ -235,6 +235,6 @@ public class OwnerController{
         cage.setLastCleaningTime(LocalDateTime.now());
         cage.setCageStatus(CageStatus.FREE);
         cageRepository.save(cage);
-        return "redirect:/owner/add_cage";
+        return "redirect:/owner/cages";
     }
 }

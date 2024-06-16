@@ -2,9 +2,7 @@ package dev.university.degree.controllers.rest;
 
 import dev.university.degree.entities.*;
 import dev.university.degree.repositories.*;
-import dev.university.degree.util.EmployeeStatus;
-import dev.university.degree.util.Job;
-import dev.university.degree.util.Unit;
+import dev.university.degree.util.*;
 import io.micrometer.common.lang.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static dev.university.degree.util.Job.VET;
@@ -25,6 +24,7 @@ public class RestOwnerController {
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
     private final EmployeeRepository employeeRepository;
+    private final CageRepository cageRepository;
     PasswordEncoder passwordEncoder;
 
     public RestOwnerController(
@@ -34,6 +34,7 @@ public class RestOwnerController {
             UserRepository userRepository,
             AuthorityRepository authorityRepository,
             EmployeeRepository employeeRepository,
+            CageRepository cageRepository,
             PasswordEncoder passwordEncoder
     ){
         this.procedureRepository = procedureRepository;
@@ -42,6 +43,7 @@ public class RestOwnerController {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.employeeRepository = employeeRepository;
+        this.cageRepository = cageRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -234,6 +236,60 @@ public class RestOwnerController {
     public ResponseEntity<Object> checkUsername(@RequestParam String username) {
         boolean exists = userRepository.existsByUsername(username);
         return ResponseEntity.ok(Collections.singletonMap("exists", exists));
+    }
+
+    @PostMapping("/add-cage")
+    public ResponseEntity<Object> addCage(
+            @RequestParam CageSize cageSize,
+            @RequestParam double pricePerDay
+    ) {
+        if (pricePerDay <= 0) {
+            return ResponseEntity.badRequest().body("Цена за день должна быть больше нуля");
+        }
+
+        Cage newCage = new Cage();
+        newCage.setCageSize(cageSize);
+        newCage.setPricePerDay(pricePerDay);
+        newCage.setCageStatus(CageStatus.FREE); // Assuming the default status is AVAILABLE
+        newCage.setLastCleaningTime(LocalDateTime.now()); // Assuming the cage is clean when added
+        newCage = cageRepository.save(newCage);
+
+        return ResponseEntity.ok(newCage);
+    }
+
+    @PutMapping("/update-cage")
+    public ResponseEntity<Object> updateCage(
+            @RequestParam long id,
+            @RequestParam double pricePerDay
+    ) {
+        if (pricePerDay <= 0) {
+            return ResponseEntity.badRequest().body("Цена за день должна быть больше нуля");
+        }
+
+        Cage cage = cageRepository.findById(id).orElse(null);
+        if (cage == null) {
+            return ResponseEntity.badRequest().body("Нет клетки с таким id");
+        }
+
+        cage.setPricePerDay(pricePerDay);
+        cage = cageRepository.save(cage);
+
+        return ResponseEntity.ok(cage);
+    }
+
+    @DeleteMapping("/delete-cage")
+    public ResponseEntity<Object> deleteCage(@RequestParam long id) {
+        Cage cage = cageRepository.findById(id).orElse(null);
+        if (cage == null) {
+            return ResponseEntity.badRequest().body("Нет клетки с таким id");
+        }
+
+        if (cage.getCageStatus() != CageStatus.FREE) {
+            return ResponseEntity.badRequest().body("Клетка не свободна, её нельзя удалить");
+        }
+
+        cageRepository.delete(cage);
+        return ResponseEntity.ok().body("Клетка успешно удалена");
     }
 
 }

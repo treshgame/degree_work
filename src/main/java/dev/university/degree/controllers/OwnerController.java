@@ -110,6 +110,7 @@ public class OwnerController{
     @GetMapping("/add_medication")
     public String addMedicationPage(Model model){
         model.addAttribute("medication", new Medication());
+        model.addAttribute("medications", medicationRepository.findAll());
         return "owner/add_medication";
     }
 

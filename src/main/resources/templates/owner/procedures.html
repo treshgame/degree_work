@@ -37,11 +37,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="procedure : ${procedures}">
-                    <form class="procedure-update-form" th:attr="data-id=${procedure.id}">
+                    <form class="procedure-update-form">
                         <!--                        <input type="number" class="procedure_id" th:value="${procedure.id}" hidden>-->
                         <td><input type="text" th:value="${procedure.name}" class="form-control" th:id="'procedure_name_' + ${procedure.id}"></td>
                         <td><input type="number" th:value="${procedure.price}" class="form-control" th:id="'procedure_price_' + ${procedure.id}"></td>
-                        <td><input type="submit" class="btn" value="Обновить"></td>
+                        <td><input type="submit" class="btn update_btn" value="Обновить" th:attr="data-id=${procedure.id}"></td>
                     </form>
                 </tr>
                 </tbody>

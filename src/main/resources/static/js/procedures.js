@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $("#new-procedure-form").submit(function(event) {
         event.preventDefault();
-        
+
         // Get form data
         var procedureName = $("#new-procedure-name").val();
         var procedurePrice = parseFloat($("#new-procedure-price").val());
@@ -27,16 +27,26 @@ $(document).ready(function() {
         $.post("http://localhost:8080/owner/add-procedure", procedureData, function(data) {
             if (data && data.id) {
                 // Add new procedure to the table
-                let newRow = `
-                    <tr>
-                        <form class="procedure-update-form">
-                            <input type="number" value="${data.id}" hidden>
-                            <td><input type="text" value="${data.name}" class="form-control" id="procedure_name_${data.id}"></td>
-                            <td><input type="number" value="${data.price}" class="form-control" id="procedure_price_${data.id}"></td>
-                            <td><input type="submit" class="btn" value="Обновить"></td>
-                        </form>
-                    </tr>
-                `;
+                let newRow = $("<tr>").attr("id", "row_" + data.id);
+                let newNameInput = $("<td>").append(
+                    $("<input>").attr("type", "text").attr("name", "procedure_name_" + data.id)
+                    .attr("id", "procedure_name_" + data.id).val(data.name)
+                    .addClass("form-control")
+                );
+                let newPriceInput = $("<td>").append(
+                    $("<input>").attr("type", "number").attr("name", "procedure_price_" + data.id)
+                    .attr("id", "procedure_price_" + data.id).val(data.price)
+                    .attr("min", "0.01").attr("step", "0.01")
+                    .addClass("form-control")
+                );
+                let newUpdateBtn = $("<td>").append(
+                    $("<button>").attr("type", "button").html("Обновить")
+                    .addClass("btn").addClass("update_btn").click(function() {
+                        updateProcedure(data.id);
+                    })
+                );
+
+                newRow.append(newNameInput).append(newPriceInput).append(newUpdateBtn);
                 $(".table tbody").append(newRow);
 
                 // Clear the form
@@ -50,29 +60,18 @@ $(document).ready(function() {
         });
     });
 
-    $(".procedure-update-form").submit(function(event) {
-        event.preventDefault();
-        
-        // let form = $(this).find;
-        let procedureId = $(this).data("id");
+    function updateProcedure(procedureId) {
         let procedureName = $(`#procedure_name_${procedureId}`).val();
         let procedurePrice = $(`#procedure_price_${procedureId}`).val();
-        console.log("form: " + $(this));
-        console.log("params: " + $.param(
-            {id: procedureId,
-                name: procedureName,
-                price: procedurePrice
-            }
-        ))
+
         $.ajax({
             url: "http://localhost:8080/owner/update-procedure",
             type: "PUT",
-            data: $.param(
-                {id: procedureId,
-                    name: procedureName,
-                    price: procedurePrice
-                }
-            ),
+            data: $.param({
+                id: procedureId,
+                name: procedureName,
+                price: procedurePrice
+            }),
             success: function(response) {
                 console.log("Procedure updated successfully:", response);
                 alert("Процедура успешно обновлена!");
@@ -82,5 +81,11 @@ $(document).ready(function() {
                 alert("Ошибка при обновлении процедуры: " + xhr.responseText);
             }
         });
+    }
+
+    $(".update_btn").click(function(event) {
+        event.preventDefault();
+        let procedureId = $(this).data('id');
+        updateProcedure(procedureId);
     });
 });

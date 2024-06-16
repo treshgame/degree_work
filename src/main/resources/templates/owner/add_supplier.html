@@ -2,48 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Добавить поставщика</title>
+    <title>Поставщики</title>
     <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/common.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="wrapper">
-
     <div th:insert="~{common/owner_header.html :: header}"></div>
     <section class="body">
-        <div class="add_form">
-            <h1>Добавить поставщика</h1>
-            <form th:action="@{/owner/add_supplier}" th:object="${supplier}" method="post">
+        <h1>Поставщики</h1>
+        <div class="body-item">
+            <h2>Добавить</h2>
+            <form class="form" id="new-supplier-form" method="post">
                 <div class="form-section">
-                    <label>название</label>
-                    <input type="text" class="form-control" th:field="*{name}">
+                    <label>Название</label>
+                    <input type="text" class="form-control" id="new-supplier-name" name="name">
                 </div>
                 <div class="form-section">
-                    <label>номер телефона</label>
-                    <input type="text" class="form-control" th:field="*{phoneNumber}">
+                    <label>Номер телефона</label>
+                    <input type="text" class="form-control" id="new-supplier-phoneNumber" name="phoneNumber">
                 </div>
                 <div class="form-section">
-                    <label>email</label>
-                    <input type="text" class="form-control" th:field="*{email}">
+                    <label>Email</label>
+                    <input type="text" class="form-control" id="new-supplier-email" name="email">
                 </div>
-                <div class="form-section">
-                    <input type="submit" class="btn" value="добавить">
-                </div>
+                <input type="submit" class="btn" value="Добавить">
             </form>
+        </div>
+        <div class="body-item">
             <h2>Список поставщиков</h2>
             <table class="table table-bordered">
                 <thead>
-                <tr>
-                    <th>Имя</th>
-                    <th>Номер телефона</th>
-                    <th>Email</th>
-                </tr>
+                <th>Название</th>
+                <th>Номер телефона</th>
+                <th>Email</th>
+                <th></th>
                 </thead>
                 <tbody>
                 <tr th:each="supplier : ${suppliers}">
-                    <td th:text="${supplier.name}"></td>
-                    <td th:text="${supplier.phoneNumber}"></td>
-                    <td th:text="${supplier.email}"></td>
+                    <form class="supplier-update-form">
+                        <td><input type="text" th:value="${supplier.name}" class="form-control" th:id="'supplier_name_' + ${supplier.id}"></td>
+                        <td><input type="text" th:value="${supplier.phoneNumber}" class="form-control" th:id="'supplier_phoneNumber_' + ${supplier.id}"></td>
+                        <td><input type="text" th:value="${supplier.email}" class="form-control" th:id="'supplier_email_' + ${supplier.id}"></td>
+                        <td><button type="button" class="btn update_btn" value="Обновить" th:attr="data-id=${supplier.id}">Обновить</button></td>
+                    </form>
                 </tr>
                 </tbody>
             </table>
@@ -51,5 +54,6 @@
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>
 </div>
+<script th:src="@{/js/suppliers.js}" type="text/javascript"></script>
 </body>
 </html>

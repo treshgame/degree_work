@@ -214,16 +214,6 @@ public class OwnerController{
         return "owner/users";
     }
 
-//    @PostMapping("/add-user")
-//    public String addUser(@ModelAttribute User user, @RequestParam Long employeeId, @RequestParam String password, PasswordEncoder passwordEncoder) {
-//        Employee employee = employeeRepository.findById(employeeId)
-//                .orElseThrow(() -> new RuntimeException("Employee not found"));
-//        user.setEmployee(employee);
-//        user.setPassword(passwordEncoder.encode(password));  // Encode the password before saving
-//        userRepository.save(user);
-//        return "redirect:/owner/users";
-//    }
-
     @GetMapping("/cages")
     public String showAddCageForm(Model model) {
         model.addAttribute("cages", cageRepository.findAll());

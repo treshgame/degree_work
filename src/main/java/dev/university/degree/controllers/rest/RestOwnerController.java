@@ -373,7 +373,7 @@ public class RestOwnerController {
     public ResponseEntity<Object> deleteUser(@RequestParam long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
-            return ResponseEntity.badRequest().body("No user found with this ID");
+            return ResponseEntity.badRequest().body("Пользователь с таким id не найден");
         }
 
         Authority authority = authorityRepository.findByUser(user);
@@ -381,7 +381,7 @@ public class RestOwnerController {
             authorityRepository.delete(authority);
         }
         userRepository.delete(user);
-        return ResponseEntity.ok().body("User deleted successfully");
+        return ResponseEntity.ok().body("Пользователь успешно удален");
     }
 
 }

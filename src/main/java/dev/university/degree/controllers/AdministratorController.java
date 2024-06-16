@@ -44,17 +44,19 @@ public class AdministratorController {
         return "administrator/administrator_index";
     }
 
-    @GetMapping("/add_client")
+    @GetMapping("/clients")
     public String addClientPage(Model model){
+        model.addAttribute("clients", clientRepository.findAll());
         model.addAttribute("client", new Client());
-        return "administrator/add_client";
+        return "administrator/clients";
     }
 
-    @GetMapping("/add_animal")
+    @GetMapping("/animals")
     public String addAnimalPage(Model model){
         model.addAttribute("animal", new Animal());
+        model.addAttribute("animals", animalRepository.findAll());
         model.addAttribute("clients", clientRepository.findAll());
-        return "administrator/add_animal";
+        return "administrator/animals";
     }
 
     @PostMapping("/add_client")
@@ -69,18 +71,6 @@ public class AdministratorController {
         System.out.println(animal);
         animalRepository.save(animal);
         return "redirect:/administrator/";
-    }
-
-    @GetMapping("/animals")
-    public String animalsList(Model model){
-        model.addAttribute("animals", animalRepository.findAll());
-        return "administrator/animals";
-    }
-
-    @GetMapping("/clients")
-    public String clientsList(Model model){
-        model.addAttribute("clients", clientRepository.findAll());
-        return "administrator/clients";
     }
 
     @GetMapping("/new-appointment")

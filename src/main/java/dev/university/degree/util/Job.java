@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Job {
-    VET("Ветеринар"),
+    VET("Ветеринарный врач"),
     ADMINISTRATOR("Администратор"),
     INPATIENT("Работник стационара");
 

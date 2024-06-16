@@ -1,43 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Список клиентов</title>
+    <title>Клиенты</title>
     <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/common.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="wrapper">
-
     <div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
-
     <section class="body">
-        <h1>Список всех клиентов</h1>
-        <div class="">
-            <table class="table table-boarded">
-                <thead>
-                <tr>
-                    <th>ФИО</th>
-                    <th>Телефон</th>
-                    <th>Email</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="client : ${clients}">
-                    <td th:text=
-                                "${client.surname} + ' '
-                            + ${client.firstName} + ' '
-                            + ${client.middleName}"
-                    >
-                    </td>
-                    <td th:text="${client.phoneNumber}"></td>
-                    <td th:text="${client.email}"></td>
-                </tr>
-                </tbody>
-            </table>
+        <h1>Добавление клиента</h1>
+        <div class="add_form">
+            <form id="new-client-form" method="post">
+                <div class="form-section">
+                    <label>Фамилия</label>
+                    <input type="text" class="form-control" id="surname" name="surname" placeholder="Иванов">
+                </div>
+                <div class="form-section">
+                    <label>Имя</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Иван">
+                </div>
+                <div class="form-section">
+                    <label>Отчество</label>
+                    <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Иванович">
+                </div>
+                <div class="form-section">
+                    <label>Номер телефона</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="+7 (xxx)-xxx-xx-xx">
+                </div>
+                <div class="form-section">
+                    <label>Email (необязательно)</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="clientemail@email.domen">
+                </div>
+                <div class="form-section">
+                    <input type="submit" class="btn" value="Добавить">
+                </div>
+            </form>
         </div>
+
+        <h2>Список клиентов</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Номер телефона</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="client : ${clients}">
+                <form class="client-update-form" th:attr="data-id=${client.id}">
+                    <td><input type="text" th:value="${client.surname}" class="form-control" th:id="'surname_' + ${client.id}" required /></td>
+                    <td><input type="text" th:value="${client.firstName}" class="form-control" th:id="'firstName_' + ${client.id}" required /></td>
+                    <td><input type="text" th:value="${client.middleName}" class="form-control" th:id="'middleName_' + ${client.id}" /></td>
+                    <td><input type="text" th:value="${client.phoneNumber}" class="form-control" th:id="'phoneNumber_' + ${client.id}" required /></td>
+                    <td><input type="email" th:value="${client.email}" class="form-control" th:id="'email_' + ${client.id}" /></td>
+                    <td>
+                        <button type="button" class="btn update_btn" th:attr="data-id=${client.id}">Обновить</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>
 </div>
+<script th:src="@{/js/clients.js}" type="text/javascript"></script>
 </body>
 </html>

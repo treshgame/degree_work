@@ -18,7 +18,4 @@ public class Animal {
     private LocalDate birthday;
     @ManyToOne
     private Client client;
-    @ManyToOne
-    @Nullable
-    private Employee vet;
 }

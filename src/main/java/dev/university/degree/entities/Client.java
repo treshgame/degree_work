@@ -19,5 +19,6 @@ public class Client {
     @Nullable
     private String middleName;
     private String phoneNumber;
+    @Nullable
     private String email;
 }

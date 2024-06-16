@@ -2,43 +2,83 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Список всех животных</title>
+    <title>Животные</title>
     <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/common.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="wrapper">
 
     <div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
     <section class="body">
-        <h1>Список всех животных</h1>
-        <div class="">
-            <table class="table table-boarded">
-                <thead>
-                <tr>
-                    <th>Кличка</th>
-                    <th>Вид</th>
-                    <th>Порода</th>
-                    <th>Владелец</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="animal : ${animals}">
-                    <td th:text="${animal.name}"></td>
-                    <td th:text="${animal.kind}"></td>
-                    <td th:text="${animal.breed}"></td>
-                    <td th:text=
-                                "${animal.client.surname} + ' '
-                        + ${animal.client.firstName} + ' '
-                        + ${animal.client.middleName}"
-                    >
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <h1>Добавление животного</h1>
+        <div class="add_form">
+            <form id="new-animal-form" method="post">
+                <div class="form-section">
+                    <label>Кличка</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="form-section">
+                    <label>Вид</label>
+                    <input type="text" class="form-control" id="kind" name="kind">
+                </div>
+                <div class="form-section">
+                    <label>Порода</label>
+                    <input type="text" class="form-control" id="breed" name="breed">
+                </div>
+                <div class="form-section">
+                    <label>Дата рождения</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday">
+                </div>
+                <div class="form-section">
+                    <label>Владелец</label>
+                    <select class="form-control" id="client" name="client">
+                        <option th:each="client : ${clients}" th:value="${client.id}"
+                                th:text="${client.surname} + ' ' + ${client.firstName}"></option>
+                    </select>
+                </div>
+                <div class="form-section">
+                    <input type="submit" class="btn" value="Добавить">
+                </div>
+            </form>
         </div>
+
+        <h2>Список животных</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Кличка</th>
+                <th>Вид</th>
+                <th>Порода</th>
+                <th>Дата рождения</th>
+                <th>Владелец</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="animal : ${animals}">
+                <form class="animal-update-form" th:attr="data-id=${animal.id}">
+                    <td><input type="text" th:value="${animal.name}" class="form-control" th:id="'name_' + ${animal.id}" required /></td>
+                    <td><input type="text" th:value="${animal.kind}" class="form-control" th:id="'kind_' + ${animal.id}" required /></td>
+                    <td><input type="text" th:value="${animal.breed}" class="form-control" th:id="'breed_' + ${animal.id}" required /></td>
+                    <td><input type="date" th:value="${animal.birthday}" class="form-control" th:id="'birthday_' + ${animal.id}" required /></td>
+                    <td>
+                        <select class="form-control" th:id="'client_' + ${animal.id}">
+                            <option th:each="client : ${clients}" th:value="${client.id}"
+                                    th:text="${client.surname} + ' ' + ${client.firstName}" th:selected="${client.id == animal.client.id}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn update_btn" th:attr="data-id=${animal.id}">Обновить</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>
 </div>
+<script th:src="@{/js/animals.js}" type="text/javascript"></script>
 </body>
 </html>

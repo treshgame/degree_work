@@ -31,6 +31,6 @@ public class User{
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Employee employee;
 }

@@ -2,8 +2,10 @@ package dev.university.degree.controllers.rest;
 
 import dev.university.degree.entities.*;
 import dev.university.degree.repositories.*;
+import dev.university.degree.services.UserService;
 import dev.university.degree.util.*;
 import io.micrometer.common.lang.Nullable;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
-import static dev.university.degree.util.Job.VET;
+import static dev.university.degree.util.Job.*;
 
 @RestController
 @RequestMapping("/owner")
@@ -25,6 +27,7 @@ public class RestOwnerController {
     private final AuthorityRepository authorityRepository;
     private final EmployeeRepository employeeRepository;
     private final CageRepository cageRepository;
+    UserService userService;
     PasswordEncoder passwordEncoder;
 
     public RestOwnerController(
@@ -35,7 +38,8 @@ public class RestOwnerController {
             AuthorityRepository authorityRepository,
             EmployeeRepository employeeRepository,
             CageRepository cageRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            UserService userService
     ){
         this.procedureRepository = procedureRepository;
         this.medicationRepository = medicationRepository;
@@ -45,6 +49,7 @@ public class RestOwnerController {
         this.employeeRepository = employeeRepository;
         this.cageRepository = cageRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
     @PostMapping("/add-procedure")
@@ -173,17 +178,12 @@ public class RestOwnerController {
         newEmployee.setStatus(EmployeeStatus.EMPLOYED);
         newEmployee = employeeRepository.save(newEmployee);
 
-        User newUser = new User();
-        newUser.setUsername(login.trim());
-        newUser.setPassword(passwordEncoder.encode(password.trim()));
-        newUser.setEnabled(true);
-        newUser.setEmployee(newEmployee);
-        userRepository.save(newUser);
-
-        Authority authority = new Authority();
-        authority.setAuthority(job.toString());
-        authority.setUser(newUser);
-        authorityRepository.save(authority);
+        String role = switch (newEmployee.getJob()) {
+            case VET -> "VET";
+            case INPATIENT -> "INPATIENT";
+            case ADMINISTRATOR -> "ADMINISTRATOR";
+        };
+       userService.registerNewUser(login, password, role, newEmployee);
 
         return ResponseEntity.ok(newEmployee);
     }
@@ -290,6 +290,98 @@ public class RestOwnerController {
 
         cageRepository.delete(cage);
         return ResponseEntity.ok().body("Клетка успешно удалена");
+    }
+
+    @PostMapping("/add-user")
+    public ResponseEntity<Object> addUser(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam long employeeId
+    ) {
+        if (username.isEmpty() || username.trim().length() < 2) {
+            return ResponseEntity.badRequest().body("Username must be at least 2 characters long");
+        }
+
+        if (userRepository.existsByUsername(username.trim())) {
+            return ResponseEntity.badRequest().body("A user with this username already exists");
+        }
+
+        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if (employee == null) {
+            return ResponseEntity.badRequest().body("No employee found with this ID");
+        }
+        String role = "";
+        if(employee.getJob() == Job.VET){
+            role = "VET";
+        }else if(employee.getJob() == INPATIENT){
+            role = "INPATIENT";
+        }else if(employee.getJob() == ADMINISTRATOR){
+            role = "ADMINISTRATOR";
+        }
+        userService.registerNewUser(username, password, role, employee);
+
+        User user = userRepository.findByUsername(username).orElse(null);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/update-user")
+    public ResponseEntity<Object> updateUser(
+            @RequestParam long id,
+            @RequestParam String username
+    ) {
+        if (username.isEmpty() || username.trim().length() < 2) {
+            return ResponseEntity.badRequest().body("Username must be at least 2 characters long");
+        }
+
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("No user found with this ID");
+        }
+
+        if (!user.getUsername().equals(username.trim()) && userRepository.existsByUsername(username.trim())) {
+            return ResponseEntity.badRequest().body("A user with this username already exists");
+        }
+
+        user.setUsername(username.trim());
+        user = userRepository.save(user);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<Object> changePassword(
+            @RequestParam long id,
+            @RequestParam String password
+    ) {
+        if (password.isEmpty() || password.trim().length() < 6) {
+            return ResponseEntity.badRequest().body("Пароль должен быть не короче 6 символов");
+        }
+
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("Пользователь с таким id не найден");
+        }
+
+        user.setPassword(passwordEncoder.encode(password.trim()));
+        user = userRepository.save(user);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/delete-user")
+    @Transactional
+    public ResponseEntity<Object> deleteUser(@RequestParam long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("No user found with this ID");
+        }
+
+        Authority authority = authorityRepository.findByUser(user);
+        if(authority != null){
+            authorityRepository.delete(authority);
+        }
+        userRepository.delete(user);
+        return ResponseEntity.ok().body("User deleted successfully");
     }
 
 }

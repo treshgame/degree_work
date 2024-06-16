@@ -210,18 +210,19 @@ public class OwnerController{
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("employees", employeeRepository.findAll());
+        model.addAttribute("users", userRepository.findAll());
         return "owner/users";
     }
 
-    @PostMapping("/add-user")
-    public String addUser(@ModelAttribute User user, @RequestParam Long employeeId, @RequestParam String password, PasswordEncoder passwordEncoder) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        user.setEmployee(employee);
-        user.setPassword(passwordEncoder.encode(password));  // Encode the password before saving
-        userRepository.save(user);
-        return "redirect:/owner/users";
-    }
+//    @PostMapping("/add-user")
+//    public String addUser(@ModelAttribute User user, @RequestParam Long employeeId, @RequestParam String password, PasswordEncoder passwordEncoder) {
+//        Employee employee = employeeRepository.findById(employeeId)
+//                .orElseThrow(() -> new RuntimeException("Employee not found"));
+//        user.setEmployee(employee);
+//        user.setPassword(passwordEncoder.encode(password));  // Encode the password before saving
+//        userRepository.save(user);
+//        return "redirect:/owner/users";
+//    }
 
     @GetMapping("/cages")
     public String showAddCageForm(Model model) {

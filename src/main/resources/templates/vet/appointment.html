@@ -13,7 +13,7 @@
     <div th:insert="~{common/vet_header.html :: header}"></div>
     <section class="body">
         <div class="container">
-            <h1 th:text="'Прием животного: ' + ${appointment.animal.kind} + ' ' + ${appointment.animal.name}"></h1>
+            <a target="_blank" th:href="@{/animal/appointment.animal.id}"><h1 th:text="'Прием животного: ' + ${appointment.animal.kind} + ' ' + ${appointment.animal.name}"></h1></a>
             <form class="form" method="post" th:action="@{/vet/appointment-receipt}">
                 <input type="text" name="appointment_id" th:value="${appointment.id}" hidden>
                 <div class="appointment-form">
@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-section">
                             <label>Назначение</label>
-                            <textarea type="text" name="prescription" class="form-control" required></textarea>
+                            <textarea name="prescription" class="form-control" required></textarea>
                         </div>
                         <div class="form-section">
                             <label>Комментарий</label>
@@ -48,15 +48,14 @@
                                         th:text="${medication.medication.name}"
                                         th:value="${medication.id}"
                                         th:attr="data-amount=${medication.amount}"
-                                        th:id="'medication_option_' + ${medication.id}"
-                                >
+                                        th:id="'medication_option_' + ${medication.id}">
                                 </option>
                             </select>
                         </div>
                         <div class="form-section">
                             <label>Количество</label>
                             <input type="number" class="form-control" id="new_medication_amount" step="0.01">
-                            <button type="button" id="new_procedure_btn" class="btn">добавить процедуру</button>
+                            <button type="button" id="new_procedure_btn" class="btn">Добавить процедуру</button>
                         </div>
                         <div class="form-section" id="procedures">
                             <table class="table">
@@ -67,7 +66,7 @@
                                 <th></th>
                                 </thead>
                                 <tbody id="procedures_tbody">
-                                <input type="number" id="procedures_amount" value="0" name="procedures_amount" step="1" hidden>
+                                    <input type="number" id="procedures_amount" value="0" name="procedures_amount" step="1" hidden>
                                 </tbody>
                             </table>
                         </div>
@@ -83,20 +82,18 @@
                         <label>Отправить в стационар</label>
                         <input type="checkbox" name="sendToInpatient" id="sendToInpatient" value="Отправить в стационар" class="form-check-input">
                     </div>
-                    <div class="form-section" id="cage_selection">
+                    <div class="form-section" id="cage_selection" style="display: none;">
                         <label>Клетка</label>
                         <select class="form-control" name="cage">
                             <option th:each="cage : ${cages}"
                                     th:if="${cage.cageStatus} == ${T(dev.university.degree.util.CageStatus).FREE}"
                                     th:value="${cage.id}"
-                                    th:text="${cage.cageSize.size} + ' ' + ${cage.pricePerDay} + 'р'"
-                            ></option>
+                                    th:text="${cage.cageSize.size} + ' ' + ${cage.pricePerDay} + 'р'">
+                            </option>
                         </select>
                     </div>
                 </div>
-                <div class="form-section">
-                    <input type="submit" class="btn" value="Выписать счет">
-                </div>
+                <input type="submit" class="btn" value="Выписать счет">
             </form>
         </div>
     </section>

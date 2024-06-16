@@ -8,6 +8,7 @@ import dev.university.degree.repositories.AnimalRepository;
 import dev.university.degree.repositories.AppointmentRepository;
 import dev.university.degree.repositories.ClientRepository;
 import dev.university.degree.repositories.EmployeeRepository;
+import dev.university.degree.util.Job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -76,7 +77,9 @@ public class AdministratorController {
     @GetMapping("/new-appointment")
     public String newAppointmentPage(Model model){
         model.addAttribute("animals", animalRepository.findAll());
-        model.addAttribute("employees", employeeRepository.findAll());
+        model.addAttribute("employees", employeeRepository.findAll().stream().filter(
+                (employee -> employee.getJob() == Job.VET)).toList()
+        );
         return "administrator/new_appointment";
     }
 

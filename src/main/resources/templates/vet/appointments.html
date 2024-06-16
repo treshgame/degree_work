@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="appointment : ${appointments}">
-                    <td th:text="${appointment.animal.kind}"></td>
+                    <a target="_blank" th:href="@{/animal/appointment.animal.id}"></a>
                     <td th:text="${appointment.animal.name}"></td>
                     <td th:text="${appointment.appointmentDate} + ' ' + ${appointment.getFormattedTime()}"></td>
                     <td><a th:href="@{/vet/} + ${appointment.id}"><button class="btn">Начать прием</button></a></td>

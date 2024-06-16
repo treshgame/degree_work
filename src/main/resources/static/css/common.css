@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 a {
@@ -78,6 +79,7 @@ html, body {
     text-decoration: none;
     transition: 0.25s;
 }
+
 /* other common parts */
 .line {
     min-width: 300px;
@@ -143,21 +145,30 @@ form {
     justify-content: space-around;
 }
 
-form select {
+form select,
+form input[type="text"],
+form input[type="number"],
+form input[type="date"] {
     min-width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 14pt;
 }
 
 .form-section {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
+    margin-bottom: 15px;
 }
 
 .btn {
     border-color: #2B5F8E;
-    border-width: 7px;
-    padding: 10px 5px;
+    border-width: 2px;
+    padding: 10px 20px;
     color: #2B5F8E;
     font-size: 16pt;
     font-weight: bold;
@@ -165,6 +176,7 @@ form select {
     margin: 10px 0;
     transition: 0.4s;
     max-width: 300px;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -176,7 +188,6 @@ form select {
     color: #2B5F8E;
     font-weight: bold;
     font-size: 16pt;
-    font-weight: bold;
     text-align: center;
     margin: 5px 0;
     text-transform: uppercase;
@@ -184,7 +195,7 @@ form select {
 
 td {
     margin: 0 auto;
-    padding: 5px 0;
+    padding: 5px 10px;
     color: #2B5F8E;
 }
 
@@ -192,7 +203,7 @@ td {
     padding: .1rem .3rem;
     max-height: 50px;
     max-width: 50px;
-    border-width: 5px;
+    border-width: 2px;
 }
 
 .appointment-form {

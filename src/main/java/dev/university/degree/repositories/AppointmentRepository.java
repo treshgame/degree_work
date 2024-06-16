@@ -1,5 +1,6 @@
 package dev.university.degree.repositories;
 
+import dev.university.degree.entities.Animal;
 import dev.university.degree.entities.Appointment;
 import dev.university.degree.util.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +28,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     );
 
     List<Appointment> findAllByStatus(AppointmentStatus status);
+
+    List<Appointment> findAllByAnimal(Animal animal);
 }

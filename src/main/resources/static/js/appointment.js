@@ -83,4 +83,12 @@ $(document).ready(function(){
             .append(new_procedure_medication_amount_td).append(new_row_btn);
         $("#procedures_tbody").append(new_row)
     });
+
+    $('#sendToInpatient').change(function() {
+        if ($(this).is(':checked')) {
+            $('#cage_selection').show();
+        } else {
+            $('#cage_selection').hide();
+        }
+    });
 })

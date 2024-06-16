@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>История Животного</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div th:if="${userRole == 'ADMINISTRATOR'}" th:insert="~{common/administrator_header.html :: administrator_header}"></div>
+    <div th:if="${userRole == 'VET'}" th:insert="~{common/vet_header.html :: header}"></div>
+    <div th:if="${userRole == 'OWNER'}" th:insert="~{common/owner_header.html :: header}"></div>
+    <div th:if="${userRole == 'INPATIENT'}" th:insert="~{common/inpatient_header.html :: header}"></div>
+
+    <section class="body">
+        <div class="container">
+            <h1 th:text="'История животного: ' + ${animal.kind} + ' ' + ${animal.name}"></h1>
+            <div class="animal-details">
+                <h2>Информация о животном</h2>
+                <p><strong>Имя:</strong> <span th:text="${animal.name}"></span></p>
+                <p><strong>Вид:</strong> <span th:text="${animal.kind}"></span></p>
+                <p><strong>Порода:</strong> <span th:text="${animal.breed}"></span></p>
+                <p><strong>Дата рождения:</strong> <span th:text="${animal.birthday}"></span></p>
+                <p><strong>Владелец:</strong> <span th:text="${animal.client.surname} + ' ' + ${animal.client.firstName}"></span></p>
+            </div>
+
+            <div class="journal-history">
+                <h2>Журнал посещений</h2>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Диагноз</th>
+                        <th>Назначение</th>
+                        <th>Комментарий</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="journal : ${journals}">
+                        <td th:text="${journal.appointment.appointmentDate}"></td>
+                        <td th:text="${journal.diagnosis}"></td>
+                        <td th:text="${journal.prescription}"></td>
+                        <td th:text="${journal.comment}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
+</body>
+</html>

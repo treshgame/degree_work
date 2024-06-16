@@ -15,26 +15,30 @@
             <h1>Занятые клетки</h1>
             <table class="table">
                 <thead>
-                <tr>
-                    <th>Имя животного</th>
-                    <th>Размер клетки</th>
-                    <th>Дата прибытия</th>
-                    <th>Время последней уборки</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Имя животного</th>
+                        <th>Размер клетки</th>
+                        <th>Дата прибытия</th>
+                        <th>Время последней уборки</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr th:each="inpatient : ${inpatients}">
-                    <td th:text="${inpatient.animal.name}"></td>
-                    <td th:text="${inpatient.cage.cageSize.size}"></td>
-                    <td th:text="${inpatient.dateOfArrival}"></td>
-                    <td th:id="'clean_time_' + ${freeCage.id}" th:text="${inpatient.cage.getFormattedDateTime()}"></td>
-                    <td><button class="btn clean_btn">Клетка убрана</button></td>
-                    <td><button class="btn procedure_btn">Новая процедура</button></td>
-                    <td><button class="btn procedure_btn">Животное выписано</button></td>
-                </tr>
+                    <tr th:each="inpatient : ${inpatients}">
+                        <td th:text="${inpatient.animal.name}"></td>
+                        <td th:text="${inpatient.cage.cageSize.size}"></td>
+                        <td th:text="${inpatient.dateOfArrival}"></td>
+                        <td th:id="'clean_time_' + ${inpatient.cage.id}" th:text="${inpatient.cage.getFormattedDateTime()}"></td>
+                        <td><button class="btn clean_btn" th:attr="data-id=${inpatient.cage.id}">Клетка убрана</button></td>
+                        <td><a th:href="@{/inpatient/add_procedure/} + ${inpatient.id}">
+                            <button class="btn procedure_btn">Новая процедура</button>
+                        </a></td>
+                        <form th:action="@{/inpatient/discharge/} + ${inpatient.id}" method="post">
+                            <td><button class="btn" type="submit">Животное выписано</button></td>
+                        </form>
+                    </tr>
                 </tbody>
             </table>
 

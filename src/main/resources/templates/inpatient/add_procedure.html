@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Процедуры пациента ' + ${inpatient.animal.name}">Добавить процедуру пациента</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <div th:insert="~{common/inpatient_header.html :: header}"></div>
+    <section class="body">
+        <div class="add_form">
+            <h1>Добавить процедуру пациента</h1>
+            <form th:action="@{/inpatient/add-procedure}" th:object="${inpatientProcedure}" method="post">
+                <input type="text" name="inpatientId" th:value="${inpatientId}" hidden>
+                <div class="form-section">
+                    <label>Процедура</label>
+                    <select th:field="*{procedure}" class="form-control">
+                        <option th:each="procedure : ${procedures}"
+                                th:value="${procedure.id}" th:text="${procedure.name}"></option>
+                    </select>
+                </div>
+                <div class="form-section">
+                    <label>Медикамент</label>
+                    <select th:field="*{medicationStorage}" class="form-control" id="medication_select">
+                        <option th:each="medicationStorage : ${medicationStorages}"
+                                th:attr="data-max=${medicationStorage.amount}"
+                                th:value="${medicationStorage.id}" th:text="${medicationStorage.medication.name}"></option>
+                    </select>
+                </div>
+                <div class="form-section">
+                    <label>Количество</label>
+                    <input type="number" class="form-control" th:field="*{amount}" step="0.01" min="0.01" id="medication_amount">
+                </div>
+                <div class="form-section">
+                    <input type="submit" class="btn" value="Добавить">
+                </div>
+            </form>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Пациент</th>
+                    <th>Процедура</th>
+                    <th>Лекарственное средство</th>
+                    <th>Количество</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inpatientProcedure : ${inpatientProcedures}">
+                    <td th:text="${inpatientProcedure.procedure.name}"></td>
+                    <td th:text="${inpatientProcedure.medicationStorage.medication.name}"></td>
+                    <td th:text="${inpatientProcedure.amount}"></td>
+                    <td th:text="${inpatientProcedure.formattedDateTime()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div th:insert="~{common/footer.html :: footer}"></div>
+</div>
+</body>
+</html>

@@ -4,6 +4,7 @@ import dev.university.degree.entities.*;
 import dev.university.degree.repositories.*;
 import dev.university.degree.util.AppointmentStatus;
 import dev.university.degree.util.CageStatus;
+import dev.university.degree.util.InpatientStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
@@ -160,9 +161,14 @@ public class VetController {
             if(inpatientRepository.findByAnimalId(appointment.getAnimal().getId()).isPresent()){
                 return "redirect:/vet";
             }
+
+            if(inpatientRepository.findByAnimalIdAndStatus(appointment.getAnimal().getId(), InpatientStatus.ILL).isPresent()){
+
+            }
             Inpatient inpatient = new Inpatient();
             inpatient.setAnimal(appointment.getAnimal());
             inpatient.setDateOfArrival(LocalDate.now());
+            inpatient.setStatus(InpatientStatus.ILL);
             Long cageId = Long.parseLong(
                     httpServletRequest.getParameter("cage")
             );
@@ -170,7 +176,9 @@ public class VetController {
             if(cage == null){
                 throw new SQLException("No cage");
             }
+
             inpatient.setCage(cage);
+            System.out.println(inpatient);
             inpatientRepository.save(inpatient);
             cage.setCageStatus(CageStatus.BUSY);
             cageRepository.save(cage);

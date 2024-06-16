@@ -1,5 +1,6 @@
 package dev.university.degree.entities;
 
+import dev.university.degree.util.InpatientStatus;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,4 +20,5 @@ public class Inpatient {
     private LocalDate dateOfArrival;
     @Nullable
     private LocalDate dateOfLeave;
+    private InpatientStatus status;
 }

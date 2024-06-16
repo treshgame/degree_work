@@ -1,6 +1,5 @@
 $(document).ready(function() {
     // Function to clean a cage
-    
     function cleanCage(cageId) {
         $.ajax({
             url: '/inpatient/cageClean',

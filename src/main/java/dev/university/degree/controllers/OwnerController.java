@@ -2,10 +2,13 @@ package dev.university.degree.controllers;
 
 import dev.university.degree.entities.*;
 import dev.university.degree.repositories.*;
+import dev.university.degree.services.UserService;
 import dev.university.degree.util.CageStatus;
 import dev.university.degree.util.EmployeeStatus;
+import dev.university.degree.util.Job;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,7 @@ public class OwnerController{
     ProcedureRepository procedureRepository;
     UserRepository userRepository;
     CageRepository cageRepository;
+    UserService userService;
 
     public OwnerController(
             EmployeeRepository employeeRepository,
@@ -40,7 +44,8 @@ public class OwnerController{
             MedicationStorageRepository medicationStorageRepository,
             ProcedureRepository procedureRepository,
             UserRepository userRepository,
-            CageRepository cageRepository
+            CageRepository cageRepository,
+            UserService userService
     ){
         this.employeeRepository = employeeRepository;
         this.supplierRepository = supplierRepository;
@@ -51,6 +56,7 @@ public class OwnerController{
         this.procedureRepository = procedureRepository;
         this.userRepository = userRepository;
         this.cageRepository = cageRepository;
+        this.userService = userService;
     }
 
     @GetMapping({"", "/"})
@@ -66,10 +72,25 @@ public class OwnerController{
     }
 
     @PostMapping("/add_employee")
-    public String addEmployee(@ModelAttribute("employee") Employee employee){
+    @Transactional
+    public String addEmployee(
+            @ModelAttribute("employee") Employee employee,
+            @RequestParam String login,
+            @RequestParam String password
+    ){
         employee.setJobStart(LocalDate.now());
         employee.setStatus(EmployeeStatus.EMPLOYED);
-        employeeRepository.save(employee);
+        Employee newEmployee = employeeRepository.save(employee);
+        String role = "";
+        if(employee.getJob() == Job.VET){
+            role = "VET";
+        }else if(employee.getJob() == Job.INPATIENT){
+            role = "INPATIENT";
+        }else if(employee.getJob() == Job.ADMINISTRATOR){
+            role = "ADMINISTRATOR";
+        }
+
+        userService.registerNewUser(login, password, role, newEmployee);
         return "redirect:/owner/add_employee";
     }
 

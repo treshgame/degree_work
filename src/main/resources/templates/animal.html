@@ -38,7 +38,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="journal : ${journals}">
+                    <tr th:each="journal : ${journals}" th:if="${journal != null}">
                         <td th:text="${journal.appointment.appointmentDate}"></td>
                         <td th:text="${journal.diagnosis}"></td>
                         <td th:text="${journal.prescription}"></td>

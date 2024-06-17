@@ -13,7 +13,7 @@
     <div th:insert="~{common/vet_header.html :: header}"></div>
     <section class="body">
         <div class="container">
-            <a target="_blank" th:href="@{/animal/appointment.animal.id}"><h1 th:text="'Прием животного: ' + ${appointment.animal.kind} + ' ' + ${appointment.animal.name}"></h1></a>
+            <a target="_blank" th:href="@{/animal/} + ${appointment.animal.id}"><h1 th:text="'Прием животного: ' + ${appointment.animal.kind} + ' ' + ${appointment.animal.name}"></h1></a>
             <form class="form" method="post" th:action="@{/vet/appointment-receipt}">
                 <input type="text" name="appointment_id" th:value="${appointment.id}" hidden>
                 <div class="appointment-form">

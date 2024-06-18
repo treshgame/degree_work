@@ -33,6 +33,7 @@ public class OwnerController{
     MedicationStorageRepository medicationStorageRepository;
     ProcedureRepository procedureRepository;
     UserRepository userRepository;
+    DiagnosisRepository diagnosisRepository;
     CageRepository cageRepository;
     UserService userService;
 
@@ -45,6 +46,7 @@ public class OwnerController{
             MedicationStorageRepository medicationStorageRepository,
             ProcedureRepository procedureRepository,
             UserRepository userRepository,
+            DiagnosisRepository diagnosisRepository,
             CageRepository cageRepository,
             UserService userService
     ){
@@ -56,6 +58,7 @@ public class OwnerController{
         this.medicationStorageRepository = medicationStorageRepository;
         this.procedureRepository = procedureRepository;
         this.userRepository = userRepository;
+        this.diagnosisRepository = diagnosisRepository;
         this.cageRepository = cageRepository;
         this.userService = userService;
     }
@@ -228,5 +231,11 @@ public class OwnerController{
         cage.setCageStatus(CageStatus.FREE);
         cageRepository.save(cage);
         return "redirect:/owner/cages";
+    }
+
+    @GetMapping("/diagnosis")
+    public String diagnosis(Model model){
+        model.addAttribute("diagnoses", diagnosisRepository.findAll());
+        return "owner/diagnosis";
     }
 }

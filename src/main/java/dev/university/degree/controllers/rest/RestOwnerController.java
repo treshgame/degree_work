@@ -27,6 +27,7 @@ public class RestOwnerController {
     private final AuthorityRepository authorityRepository;
     private final EmployeeRepository employeeRepository;
     private final CageRepository cageRepository;
+    private final DiagnosisRepository diagnosisRepository;
     UserService userService;
     PasswordEncoder passwordEncoder;
 
@@ -38,6 +39,7 @@ public class RestOwnerController {
             AuthorityRepository authorityRepository,
             EmployeeRepository employeeRepository,
             CageRepository cageRepository,
+            DiagnosisRepository diagnosisRepository,
             PasswordEncoder passwordEncoder,
             UserService userService
     ){
@@ -48,6 +50,7 @@ public class RestOwnerController {
         this.authorityRepository = authorityRepository;
         this.employeeRepository = employeeRepository;
         this.cageRepository = cageRepository;
+        this.diagnosisRepository = diagnosisRepository;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
@@ -382,6 +385,44 @@ public class RestOwnerController {
         }
         userRepository.delete(user);
         return ResponseEntity.ok().body("Пользователь успешно удален");
+    }
+    @PostMapping("/add-diagnosis")
+    public ResponseEntity<Object> addDiagnosis(@RequestParam String name) {
+        if (name.isEmpty() || name.trim().length() < 2) {
+            return ResponseEntity.badRequest().body("Название диагноза должно быть длиннее");
+        }
+
+        Diagnosis newDiagnosis = new Diagnosis();
+        newDiagnosis.setName(name.trim());
+        newDiagnosis = diagnosisRepository.save(newDiagnosis);
+        return ResponseEntity.ok(newDiagnosis);
+    }
+
+    @PutMapping("/update-diagnosis")
+    public ResponseEntity<Object> updateDiagnosis(@RequestParam long id, @RequestParam String name) {
+        if (name.isEmpty() || name.trim().length() < 2) {
+            return ResponseEntity.badRequest().body("Название диагноза должно быть длиннее");
+        }
+
+        Diagnosis diagnosis = diagnosisRepository.findById(id).orElse(null);
+        if (diagnosis == null) {
+            return ResponseEntity.badRequest().body("Нет диагноза с таким id");
+        }
+
+        diagnosis.setName(name.trim());
+        diagnosis = diagnosisRepository.save(diagnosis);
+        return ResponseEntity.ok(diagnosis);
+    }
+
+    @DeleteMapping("/delete-diagnosis")
+    public ResponseEntity<Object> deleteDiagnosis(@RequestParam long id) {
+        Diagnosis diagnosis = diagnosisRepository.findById(id).orElse(null);
+        if (diagnosis == null) {
+            return ResponseEntity.badRequest().body("Нет диагноза с таким id");
+        }
+
+        diagnosisRepository.delete(diagnosis);
+        return ResponseEntity.ok().body("Диагноз успешно удален");
     }
 
 }

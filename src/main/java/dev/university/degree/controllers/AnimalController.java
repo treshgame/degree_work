@@ -61,6 +61,7 @@ public class AnimalController {
                 userRole = "INPATIENT";
             }
         }
+
         model.addAttribute("journals", journals);
         model.addAttribute("animal", animal);
         model.addAttribute("userRole", userRole);

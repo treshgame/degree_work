@@ -25,13 +25,13 @@ $(document).ready(function() {
                 );
                 let newUpdateBtn = $("<td>").append(
                     $("<button>").attr("type", "button").html("Обновить")
-                    .addClass("btn update_btn").click(function() {
+                    .addClass("custom-btn update_btn").click(function() {
                         updateDiagnosis(data.id);
                     })
                 );
                 let newDeleteBtn = $("<td>").append(
                     $("<button>").attr("type", "button").html("Удалить")
-                    .addClass("btn delete_btn").click(function() {
+                    .addClass("custom-btn delete_btn").click(function() {
                         deleteDiagnosis(data.id);
                     })
                 );

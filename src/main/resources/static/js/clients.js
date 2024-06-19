@@ -49,7 +49,7 @@ $(document).ready(function() {
                 );
                 let newActions = $("<td>").append(
                     $("<button>").attr("type", "button").html("Обновить")
-                    .addClass("btn").addClass("update_btn").click(function() {
+                    .addClass("custom-btn").addClass("update_btn").click(function() {
                         updateClient(data.id);
                     })
                 );

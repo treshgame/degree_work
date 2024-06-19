@@ -38,7 +38,7 @@ $(document).ready(function() {
                 );
                 let newUpdateBtn = $("<td>").append(
                     $("<button>").attr("type", "button").html("Обновить")
-                    .addClass("btn").addClass("update_btn").click(function() {
+                    .addClass("custom-btn").addClass("update_btn").click(function() {
                         updateMedication(data.id);
                     })
                 );

@@ -64,7 +64,7 @@ $(document).ready(function(){
         
         let new_row_btn = $("<td>").append(
             $("<button>").attr("data-row", procedures_amount).attr("data-medication", new_procedure.val())
-                .html("-").addClass("btn").addClass("table-btn").addClass("delete-procedure")
+                .html("-").addClass("custom-btn").addClass("table-btn").addClass("delete-procedure")
                 .click(function(event) {
                     event.preventDefault()
                     let medication_id = $(new_procedure_medication).val();

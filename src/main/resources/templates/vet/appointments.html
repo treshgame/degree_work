@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Записи на прием</title>
-    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/common.css}" rel="stylesheet">
-    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <div th:insert="~{common/head.html :: head}"></div>
 </head>
 <body>
 <div class="wrapper">
@@ -25,7 +23,7 @@
                     <a target="_blank" th:href="@{/animal/appointment.animal.id}"></a>
                     <td th:text="${appointment.animal.name}"></td>
                     <td th:text="${appointment.appointmentDate} + ' ' + ${appointment.getFormattedTime()}"></td>
-                    <td><a th:href="@{/vet/} + ${appointment.id}"><button class="btn">Начать прием</button></a></td>
+                    <td><a th:href="@{/vet/} + ${appointment.id}"><button class="custom-btn">Начать прием</button></a></td>
                 </tr>
                 </tbody>
             </table>

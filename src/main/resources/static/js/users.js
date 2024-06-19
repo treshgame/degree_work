@@ -33,15 +33,15 @@ $(document).ready(function() {
                         let newEmployeeCell = $("<td>").text(data.employee.firstName + ' ' + data.employee.surname);
                         let newActions = $("<td>").append(
                             $("<button>").attr("type", "button").html("Обновить")
-                            .addClass("btn").addClass("update_btn").click(function() {
+                            .addClass("custom-btn").addClass("update_btn").click(function() {
                                 updateUser(data.id);
                             }),
                             $("<button>").attr("type", "button").html("Поменять пароль")
-                            .addClass("btn").addClass("change_password_btn").click(function() {
+                            .addClass("custom-btn").addClass("change_password_btn").click(function() {
                                 changePassword(data.id);
                             }),
                             $("<button>").attr("type", "button").html("Удалить")
-                            .addClass("btn").addClass("delete_btn").click(function() {
+                            .addClass("custom-btn").addClass("delete_btn").click(function() {
                                 deleteUser(data.id);
                             })
                         );

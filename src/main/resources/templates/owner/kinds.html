@@ -2,20 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Диагнозы</title>
+    <title>Виды Животных</title>
     <div th:insert="~{common/head.html :: head}"></div>
 </head>
 <body>
 <div class="wrapper">
     <div th:insert="~{common/owner_header.html :: header}"></div>
     <section class="body">
-        <h1>Диагнозы</h1>
+        <h1>Виды Животных</h1>
         <div class="body-item">
             <h2>Добавить</h2>
-            <form class="form" id="new-diagnosis-form" method="post">
+            <form class="form" id="new-animal-kind-form" method="post">
                 <div class="form-section">
                     <label>Название</label>
-                    <input type="text" class="form-control" id="new-diagnosis-name" name="name" placeholder="Название диагноза" required>
+                    <input type="text" class="form-control" id="new-animal-kind-name" name="name" placeholder="Название вида" required>
                 </div>
                 <div class="form-section">
                     <input type="submit" class="custom-btn" value="Добавить">
@@ -24,18 +24,18 @@
         </div>
         <div class="body-item">
         </div>
-        <h2>Список диагнозов</h2>
+        <h2>Список Виды Животных</h2>
         <table class="table table-bordered">
             <thead>
             <th>Название</th>
             <th></th>
             </thead>
             <tbody>
-            <tr th:each="diagnosis : ${diagnoses}" th:id="'row_' + ${diagnosis.id}">
-                <form class="diagnosis-update-form">
-                    <td><input type="text" th:value="${diagnosis.name}" class="form-control" th:id="'diagnosis_name_' + ${diagnosis.id}"></td>
-                    <td><button type="button" class="custom-btn update_btn" value="Обновить" th:attr="data-id=${diagnosis.id}">Обновить</button></td>
-                    <td><button type="button" class="custom-btn delete_btn" value="Удалить" th:attr="data-id=${diagnosis.id}">Удалить</button></td>
+            <tr th:each="animalKind : ${kinds}" th:id="'row_' + ${animalKind.id}">
+                <form class="animal-kind-update-form">
+                    <td><input type="text" th:value="${animalKind.name}" class="form-control" th:id="'animal_kind_name_' + ${animalKind.id}"></td>
+                    <td><button type="button" class="custom-btn update_btn" value="Обновить" th:attr="data-id=${animalKind.id}">Обновить</button></td>
+                    <td><button type="button" class="custom-btn delete_btn" value="Удалить" th:attr="data-id=${animalKind.id}">Удалить</button></td>
                 </form>
             </tr>
             </tbody>
@@ -43,6 +43,6 @@
     </section>
     <div th:insert="~{common/footer.html :: footer}"></div>
 </div>
-<script th:src="@{/js/diagnosis.js}" type="text/javascript"></script>
+<script th:src="@{/js/kinds.js}" type="text/javascript"></script>
 </body>
 </html>

@@ -41,11 +41,11 @@ $(document).ready(function() {
                 );
                 let newButtons = $("<td>").append(
                     $("<button>").attr("type", "button").html("Обновить")
-                    .addClass("btn").addClass("update_btn").click(function() {
+                    .addClass("custom-btn").addClass("update_btn").click(function() {
                         updateCage(data.id);
                     }),
                     $("<button>").attr("type", "button").html("Удалить")
-                    .addClass("btn").addClass("delete_btn").click(function() {
+                    .addClass("custom-btn").addClass("delete_btn").click(function() {
                         deleteCage(data.id);
                     })
                 );

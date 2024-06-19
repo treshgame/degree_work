@@ -34,6 +34,7 @@ public class OwnerController{
     ProcedureRepository procedureRepository;
     UserRepository userRepository;
     DiagnosisRepository diagnosisRepository;
+    AnimalKindRepository animalKindRepository;
     CageRepository cageRepository;
     UserService userService;
 
@@ -48,6 +49,7 @@ public class OwnerController{
             UserRepository userRepository,
             DiagnosisRepository diagnosisRepository,
             CageRepository cageRepository,
+            AnimalKindRepository animalKindRepository,
             UserService userService
     ){
         this.employeeRepository = employeeRepository;
@@ -60,6 +62,7 @@ public class OwnerController{
         this.userRepository = userRepository;
         this.diagnosisRepository = diagnosisRepository;
         this.cageRepository = cageRepository;
+        this.animalKindRepository = animalKindRepository;
         this.userService = userService;
     }
 
@@ -237,5 +240,11 @@ public class OwnerController{
     public String diagnosis(Model model){
         model.addAttribute("diagnoses", diagnosisRepository.findAll());
         return "owner/diagnosis";
+    }
+
+    @GetMapping("/kinds")
+    public String kinds(Model model){
+        model.addAttribute("kinds", animalKindRepository.findAll());
+        return "owner/kinds";
     }
 }

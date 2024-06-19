@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
 
 import static dev.university.degree.util.Job.*;
 
@@ -28,6 +29,7 @@ public class RestOwnerController {
     private final EmployeeRepository employeeRepository;
     private final CageRepository cageRepository;
     private final DiagnosisRepository diagnosisRepository;
+    private final AnimalKindRepository animalKindRepository;
     UserService userService;
     PasswordEncoder passwordEncoder;
 
@@ -40,6 +42,7 @@ public class RestOwnerController {
             EmployeeRepository employeeRepository,
             CageRepository cageRepository,
             DiagnosisRepository diagnosisRepository,
+            AnimalKindRepository animalKindRepository,
             PasswordEncoder passwordEncoder,
             UserService userService
     ){
@@ -51,6 +54,7 @@ public class RestOwnerController {
         this.employeeRepository = employeeRepository;
         this.cageRepository = cageRepository;
         this.diagnosisRepository = diagnosisRepository;
+        this.animalKindRepository = animalKindRepository;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
@@ -425,4 +429,45 @@ public class RestOwnerController {
         return ResponseEntity.ok().body("Диагноз успешно удален");
     }
 
+    @PostMapping("/add-animal-kind")
+    public ResponseEntity<AnimalKind> addAnimalKind(@RequestParam String name) {
+        if (name.isEmpty() || name.trim().length() < 2) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        AnimalKind newAnimalKind = new AnimalKind();
+        newAnimalKind.setName(name.trim());
+        AnimalKind savedAnimalKind = animalKindRepository.save(newAnimalKind);
+
+        return ResponseEntity.ok(savedAnimalKind);
+    }
+
+    @PutMapping("/update-animal-kind")
+    public ResponseEntity<AnimalKind> updateAnimalKind(@RequestParam long id, @RequestParam String name) {
+        if (name.isEmpty() || name.trim().length() < 2) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<AnimalKind> optionalAnimalKind = animalKindRepository.findById(id);
+        if (optionalAnimalKind.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        AnimalKind animalKind = optionalAnimalKind.get();
+        animalKind.setName(name.trim());
+        AnimalKind updatedAnimalKind = animalKindRepository.save(animalKind);
+
+        return ResponseEntity.ok(updatedAnimalKind);
+    }
+
+    @DeleteMapping("/delete-animal-kind")
+    public ResponseEntity<Void> deleteAnimalKind(@RequestParam long id) {
+        Optional<AnimalKind> optionalAnimalKind = animalKindRepository.findById(id);
+        if (optionalAnimalKind.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        animalKindRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }

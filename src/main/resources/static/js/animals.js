@@ -27,6 +27,11 @@ $(document).ready(function() {
             return;
         }
 
+        if($("#birthday").val().length == 0){
+            alert("Не указана дата");
+            return;
+        }
+
         // Send AJAX POST request
         $.post("http://localhost:8080/administrator/add-animal", animalData, function(data) {
             if (data && data.id) {
@@ -52,17 +57,16 @@ $(document).ready(function() {
                     .attr("id", "birthday_" + data.id).val(data.birthday)
                     .addClass("form-control").prop("required", true)
                 );
-                let newClientSelect = $("<td>").append(
-                    $("<select>").attr("name", "client_" + data.id)
+                let newOwnerSelect = $('select').append($("#client > option").clone()).attr("name", "client_" + data.id)
                     .attr("id", "client_" + data.id)
-                    .addClass("form-control")
-                    .append($("#client > option").clone().prop('selected', function() {
+                    .addClass("form-control").prop('selected', function() {
                         return this.value == data.client.id;
-                    }))
-                );
+                    });
+
+                let newClientSelect = $("<td>").append(newOwnerSelect);
                 let newActions = $("<td>").append(
                     $("<button>").attr("type", "button").html("Обновить")
-                    .addClass("btn").addClass("update_btn").click(function() {
+                    .addClass("custom-btn").addClass("update_btn").click(function() {
                         updateAnimal(data.id);
                     }),
                 );
@@ -73,6 +77,8 @@ $(document).ready(function() {
 
                 // Clear the form
                 $("#new-animal-form")[0].reset();
+
+                alert("Животное успешно добавлена")
             } else {
                 alert("Ошибка при добавлении животного");
             }
@@ -80,7 +86,7 @@ $(document).ready(function() {
             console.error("Ошибка:", error);
             alert("Ошибка при добавлении животного");
         });
-    });
+});
 
     function updateAnimal(animalId) {
         let animalData = {
@@ -120,6 +126,7 @@ $(document).ready(function() {
                 alert("Ошибка при обновлении животного: " + xhr.responseText);
             }
         });
+    
     }
 
     $(".update_btn").click(function(event) {
@@ -128,3 +135,4 @@ $(document).ready(function() {
         updateAnimal(animalId);
     });
 });
+

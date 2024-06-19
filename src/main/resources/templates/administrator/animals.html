@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Животные</title>
-    <link th:href="@{/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/common.css}" rel="stylesheet">
-    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <div th:insert="~{common/head.html :: head}"></div>
 </head>
 <body>
 <div class="wrapper">
-
     <div th:insert="~{common/administrator_header.html :: administrator_header}"></div>
     <section class="body">
         <h1>Добавление животного</h1>
@@ -17,29 +14,30 @@
             <form id="new-animal-form" method="post">
                 <div class="form-section">
                     <label>Кличка</label>
-                    <input type="text" class="form-control" id="name" name="name">
+                    <input type="text" class="form-control" id="name" name="name" required>
                 </div>
                 <div class="form-section">
                     <label>Вид</label>
-                    <input type="text" class="form-control" id="kind" name="kind">
+                    <input type="text" class="form-control" id="kind" name="kind" required>
                 </div>
                 <div class="form-section">
                     <label>Порода</label>
-                    <input type="text" class="form-control" id="breed" name="breed">
+                    <input type="text" class="form-control" id="breed" name="breed" required>
                 </div>
                 <div class="form-section">
                     <label>Дата рождения</label>
-                    <input type="date" class="form-control" id="birthday" name="birthday">
+                    <input type="date" class="form-control" id="birthday" name="birthday" required>
                 </div>
                 <div class="form-section">
                     <label>Владелец</label>
-                    <select class="form-control" id="client" name="client">
+                    <select class="form-control" id="client" name="client" data-live-search="true"
+                        data-none-selected-text="Ничего не выбрано">
                         <option th:each="client : ${clients}" th:value="${client.id}"
                                 th:text="${client.surname} + ' ' + ${client.firstName}"></option>
                     </select>
                 </div>
                 <div class="form-section">
-                    <input type="submit" class="btn" value="Добавить">
+                    <input type="submit" class="custom-btn" value="Добавить">
                 </div>
             </form>
         </div>
@@ -64,13 +62,13 @@
                     <td><input type="text" th:value="${animal.breed}" class="form-control" th:id="'breed_' + ${animal.id}" required /></td>
                     <td><input type="date" th:value="${animal.birthday}" class="form-control" th:id="'birthday_' + ${animal.id}" required /></td>
                     <td>
-                        <select class="form-control" th:id="'client_' + ${animal.id}">
+                        <select class="form-control" th:id="'client_' + ${animal.id}" data-live-search="true">
                             <option th:each="client : ${clients}" th:value="${client.id}"
                                     th:text="${client.surname} + ' ' + ${client.firstName}" th:selected="${client.id == animal.client.id}"></option>
                         </select>
                     </td>
                     <td>
-                        <button type="button" class="btn update_btn" th:attr="data-id=${animal.id}">Обновить</button>
+                        <button type="button" class="custom-btn update_btn" th:attr="data-id=${animal.id}">Обновить</button>
                     </td>
                 </form>
             </tr>

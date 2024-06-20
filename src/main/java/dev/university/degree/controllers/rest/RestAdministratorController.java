@@ -1,8 +1,10 @@
 package dev.university.degree.controllers.rest;
 
 import dev.university.degree.entities.Animal;
+import dev.university.degree.entities.AnimalKind;
 import dev.university.degree.entities.Appointment;
 import dev.university.degree.entities.Client;
+import dev.university.degree.repositories.AnimalKindRepository;
 import dev.university.degree.repositories.AnimalRepository;
 import dev.university.degree.repositories.AppointmentRepository;
 import dev.university.degree.repositories.ClientRepository;
@@ -20,14 +22,17 @@ public class RestAdministratorController {
     private final AppointmentRepository appointmentRepository;
     private final AnimalRepository animalRepository;
     private final ClientRepository clientRepository;
+    private final AnimalKindRepository animalKindRepository;
     public RestAdministratorController(
             AppointmentRepository appointmentRepository,
             AnimalRepository animalRepository,
-            ClientRepository clientRepository
+            ClientRepository clientRepository,
+            AnimalKindRepository animalKindRepository
     ){
         this.appointmentRepository = appointmentRepository;
         this.animalRepository = animalRepository;
         this.clientRepository = clientRepository;
+        this.animalKindRepository = animalKindRepository;
     }
 
     @GetMapping("/free-time")
@@ -53,7 +58,7 @@ public class RestAdministratorController {
     @PostMapping("/add-animal")
     public ResponseEntity<Object> addAnimal(
             @RequestParam String name,
-            @RequestParam String kind,
+            @RequestParam Long kind,
             @RequestParam String breed,
             @RequestParam LocalDate birthday,
             @RequestParam long clientId
@@ -67,9 +72,10 @@ public class RestAdministratorController {
             return ResponseEntity.badRequest().body("Нет клиента с таким id");
         }
 
+        AnimalKind animalKind = animalKindRepository.findById(kind).orElse(null);
         Animal newAnimal = new Animal();
         newAnimal.setName(name.trim());
-        newAnimal.setKind(kind.trim());
+        newAnimal.setKind(animalKind);
         newAnimal.setBreed(breed.trim());
         newAnimal.setBirthday(birthday);
         newAnimal.setClient(client);
@@ -82,7 +88,7 @@ public class RestAdministratorController {
     public ResponseEntity<Object> updateAnimal(
             @RequestParam long id,
             @RequestParam String name,
-            @RequestParam String kind,
+            @RequestParam Long kind,
             @RequestParam String breed,
             @RequestParam LocalDate birthday,
             @RequestParam long clientId
@@ -101,8 +107,9 @@ public class RestAdministratorController {
             return ResponseEntity.badRequest().body("Нет клиента с таким id");
         }
 
+        AnimalKind animalKind = animalKindRepository.findById(kind).orElse(null);
         animal.setName(name.trim());
-        animal.setKind(kind.trim());
+        animal.setKind(animalKind);
         animal.setBreed(breed.trim());
         animal.setBirthday(birthday);
         animal.setClient(client);

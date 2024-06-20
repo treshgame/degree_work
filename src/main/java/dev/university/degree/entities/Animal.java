@@ -13,7 +13,8 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String kind;
+    @ManyToOne
+    private AnimalKind kind;
     private String breed;
     private LocalDate birthday;
     @ManyToOne

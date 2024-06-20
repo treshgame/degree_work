@@ -8,12 +8,17 @@
 <div th:fragment="header" class="administrator_header">
     <div class="header_menu">
         <ul class="header_menu_list">
-            <li><a th:href="@{/owner/add_employee}">сотрудники</a></li>
-            <li><a th:href="@{/owner/add_supplier}">поставщики</a></li>
-            <li><a th:href="@{/owner/procedures}">процедуры</a></li>
-            <li><a th:href="@{/owner/add_medication}">медикаменты</a></li>
+            <li class="dropdown">
+                <button class="dropbtn">Сущности</button>
+                <div class="dropdown-content">
+                    <a th:href="@{/owner/add_employee}">сотрудники</a>
+                    <a th:href="@{/owner/add_supplier}">поставщики</a>
+                    <a th:href="@{/owner/procedures}">процедуры</a>
+                    <a th:href="@{/owner/add_medication}">медикаменты</a>
+                    <a th:href="@{/owner/cages}">клетки</a>
+                </div>
+            </li>
             <li><a th:href="@{/owner/medication_storage}">Склад</a></li>
-            <li><a th:href="@{/owner/cages}">клетки</a></li>
             <li><a th:href="@{/owner/users}">пользователи</a></li><br>
             <li><a th:href="@{/vet}" target="_blank">Ветеринарный врач</a></li>
             <li><a th:href="@{/administrator/new-appointment}" target="_blank">Администратор</a></li>

@@ -22,11 +22,6 @@ $(document).ready(function() {
             return;
         }
 
-        if(animalData.breed.trim().length < 2){
-            alert("Название породы должно быть длиннее")
-            return;
-        }
-
         if($("#birthday").val().length == 0){
             alert("Не указана дата");
             return;

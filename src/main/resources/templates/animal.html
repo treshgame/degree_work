@@ -16,11 +16,11 @@
 
     <section class="body">
         <div class="container">
-            <h1 th:text="'История животного: ' + ${animal.kind} + ' ' + ${animal.name}"></h1>
+            <h1 th:text="'История животного: ' + ${animal.kind.name} + ' ' + ${animal.name}"></h1>
             <div class="animal-details">
                 <h2>Информация о животном</h2>
                 <p><strong>Имя:</strong> <span th:text="${animal.name}"></span></p>
-                <p><strong>Вид:</strong> <span th:text="${animal.kind}"></span></p>
+                <p><strong>Вид:</strong> <span th:text="${animal.kind.name}"></span></p>
                 <p><strong>Порода:</strong> <span th:text="${animal.breed}"></span></p>
                 <p><strong>Дата рождения:</strong> <span th:text="${animal.birthday}"></span></p>
                 <p><strong>Владелец:</strong> <span th:text="${animal.client.surname} + ' ' + ${animal.client.firstName}"></span></p>
@@ -40,7 +40,7 @@
                     <tbody>
                     <tr th:each="journal : ${journals}" th:if="${journal != null}">
                         <td th:text="${journal.appointment.appointmentDate}"></td>
-                        <td th:text="${journal.diagnosis}"></td>
+                        <td th:text="${journal.diagnosis.name}"></td>
                         <td th:text="${journal.prescription}"></td>
                         <td th:text="${journal.comment}"></td>
                     </tr>

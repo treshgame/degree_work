@@ -11,14 +11,18 @@
     <div th:insert="~{common/vet_header.html :: header}"></div>
     <section class="body">
         <div class="container">
-            <a target="_blank" th:href="@{/animal/} + ${appointment.animal.id}"><h1 th:text="'Прием животного: ' + ${appointment.animal.kind} + ' ' + ${appointment.animal.name}"></h1></a>
+            <a target="_blank" th:href="@{/animal/} + ${appointment.animal.id}"><h1 th:text="'Прием животного: ' + ${appointment.animal.kind.name} + ' ' + ${appointment.animal.name}"></h1></a>
             <form class="form" method="post" th:action="@{/vet/appointment-receipt}">
                 <input type="text" name="appointment_id" th:value="${appointment.id}" hidden>
                 <div class="appointment-form">
                     <div class="appointment-form-item">
                         <div class="form-section">
                             <label>Диагноз</label>
-                            <input type="text" name="diagnosis" class="form-control" required>
+                            <select name="diagnosis" id="diagnosis" class="form-control" required>
+                                <option value=""></option>
+                                <option th:each="diagnosis : ${diagnoses}"
+                                    th:value="${diagnosis.id}" th:text="${diagnosis.name}"></option>
+                            </select>
                         </div>
                         <div class="form-section">
                             <label>Назначение</label>
@@ -43,7 +47,7 @@
                             <label>Препарат</label>
                             <select class="form-control" id="new_procedure_medication">
                                 <option th:each="medication : ${medications}"
-                                        th:text="${medication.medication.name}"
+                                        th:text="${medication.medication.name} + '(' + ${medication.medication.unit.unitName} + ')'"
                                         th:value="${medication.id}"
                                         th:attr="data-amount=${medication.amount}"
                                         th:id="'medication_option_' + ${medication.id}">

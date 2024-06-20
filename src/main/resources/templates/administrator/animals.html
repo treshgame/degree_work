@@ -18,7 +18,11 @@
                 </div>
                 <div class="form-section">
                     <label>Вид</label>
-                    <input type="text" class="form-control" id="kind" name="kind" required>
+                    <select name="kind" class="form-control">
+                        <option th:each="kind : ${kinds}"
+                            th:value="${kind.id}" th:text="${kind.name}">
+                        </option>
+                    </select>
                 </div>
                 <div class="form-section">
                     <label>Порода</label>
@@ -58,7 +62,14 @@
             <tr th:each="animal : ${animals}">
                 <form class="animal-update-form" th:attr="data-id=${animal.id}">
                     <td><input type="text" th:value="${animal.name}" class="form-control" th:id="'name_' + ${animal.id}" required /></td>
-                    <td><input type="text" th:value="${animal.kind}" class="form-control" th:id="'kind_' + ${animal.id}" required /></td>
+                    <td>
+                        <select class="form-control" th:id="'kind_' + ${animal.id}">
+                            <option th:each="kind : ${kinds}"
+                                    th:value="${kind.id}" th:text="${kind.name}"
+                                    th:selected="${animal.kind.id == kind.id}">
+                            </option>
+                        </select>
+                    </td>
                     <td><input type="text" th:value="${animal.breed}" class="form-control" th:id="'breed_' + ${animal.id}" required /></td>
                     <td><input type="date" th:value="${animal.birthday}" class="form-control" th:id="'birthday_' + ${animal.id}" required /></td>
                     <td>

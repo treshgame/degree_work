@@ -31,6 +31,7 @@ public class VetController {
     ReceiptRepository receiptRepository;
     CageRepository cageRepository;
     InpatientRepository inpatientRepository;
+    DiagnosisRepository diagnosisRepository;
 
     public VetController(
             AppointmentRepository appointmentRepository,
@@ -40,7 +41,8 @@ public class VetController {
             JournalRepository journalRepository,
             ReceiptRepository receiptRepository,
             CageRepository cageRepository,
-            InpatientRepository inpatientRepository
+            InpatientRepository inpatientRepository,
+            DiagnosisRepository diagnosisRepository
     ){
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
@@ -50,6 +52,7 @@ public class VetController {
         this.receiptRepository = receiptRepository;
         this.cageRepository = cageRepository;
         this.inpatientRepository = inpatientRepository;
+        this.diagnosisRepository = diagnosisRepository;
     }
 
     @GetMapping({"/", ""})
@@ -78,6 +81,7 @@ public class VetController {
         model.addAttribute("appointment", appointmentOptional.get());
         model.addAttribute("procedures", procedureRepository.findAll());
         model.addAttribute("medications", medicationStorageRepository.findAll());
+        model.addAttribute("diagnoses", diagnosisRepository.findAll());
         List<Cage> cages = cageRepository.findByCageStatus(CageStatus.FREE);
         if(cages.isEmpty()){
             model.addAttribute("noCages", true);
@@ -90,7 +94,10 @@ public class VetController {
     @PostMapping("/appointment-receipt")
     @Transactional
     public String appointmentReceipt(HttpServletRequest httpServletRequest) throws SQLException {
-        String diagnosis = httpServletRequest.getParameter("diagnosis").trim();
+        Long diagnosisId = Long.parseLong(
+                httpServletRequest.getParameter("diagnosis")
+        );
+        Diagnosis diagnosis = diagnosisRepository.findById(diagnosisId).orElse(null);
         String prescription = httpServletRequest.getParameter("prescription").trim();
         String comment = httpServletRequest.getParameter("comment").trim();
 
@@ -99,6 +106,7 @@ public class VetController {
         if(appointment == null){
             return "redirect:/vet";
         }
+
         Journal newJournal = new Journal();
         newJournal.setAppointment(appointment);
         newJournal.setDiagnosis(diagnosis);

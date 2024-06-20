@@ -4,10 +4,7 @@ import dev.university.degree.entities.Animal;
 import dev.university.degree.entities.Appointment;
 import dev.university.degree.entities.Client;
 import dev.university.degree.entities.Employee;
-import dev.university.degree.repositories.AnimalRepository;
-import dev.university.degree.repositories.AppointmentRepository;
-import dev.university.degree.repositories.ClientRepository;
-import dev.university.degree.repositories.EmployeeRepository;
+import dev.university.degree.repositories.*;
 import dev.university.degree.util.Job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +24,20 @@ public class AdministratorController {
     AnimalRepository animalRepository;
     EmployeeRepository employeeRepository;
     AppointmentRepository appointmentRepository;
+    AnimalKindRepository animalKindRepository;
     @Autowired
     public AdministratorController(
         ClientRepository clientRepository,
         AnimalRepository animalRepository,
         EmployeeRepository employeeRepository,
-        AppointmentRepository appointmentRepository
+        AppointmentRepository appointmentRepository,
+        AnimalKindRepository animalKindRepository
     ){
         this.clientRepository = clientRepository;
         this.animalRepository = animalRepository;
         this.employeeRepository = employeeRepository;
         this.appointmentRepository = appointmentRepository;
+        this.animalKindRepository = animalKindRepository;
     }
 
     @GetMapping("/")
@@ -57,6 +57,7 @@ public class AdministratorController {
         model.addAttribute("animal", new Animal());
         model.addAttribute("animals", animalRepository.findAll());
         model.addAttribute("clients", clientRepository.findAll());
+        model.addAttribute("kinds", animalKindRepository.findAll());
         return "administrator/animals";
     }
 

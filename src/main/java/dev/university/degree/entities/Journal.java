@@ -12,7 +12,8 @@ public class Journal {
     private Long id;
     @ManyToOne
     private Appointment appointment;
-    private String diagnosis;
+    @ManyToOne
+    private Diagnosis diagnosis;
     private String prescription;
     @Nullable
     private String comment;

@@ -31,7 +31,7 @@
                         <td th:id="'clean_time_' + ${inpatient.cage.id}" th:text="${inpatient.cage.getFormattedDateTime()}"></td>
                         <td><button class="custom-btn clean_btn" th:attr="data-id=${inpatient.cage.id}">Клетка убрана</button></td>
                         <td><a th:href="@{/inpatient/add_procedure/} + ${inpatient.id}">
-                            <button class="custom-btn procedure_btn">Новая процедура</button>
+                            <button class="custom-btn procedure_btn">Сделать процедуру</button>
                         </a></td>
                         <form th:action="@{/inpatient/discharge/} + ${inpatient.id}" method="post">
                             <td><button class="custom-btn" type="submit">Животное выписано</button></td>

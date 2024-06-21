@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Процедуры пациента ' + ${inpatient.animal.name}">Добавить процедуру пациента</title>
+    <title th:text="'Процедуры пациента ' + ${inpatient.animal.name}"></title>
     <div th:insert="~{common/head.html :: head}"></div>
 </head>
 <body>
@@ -10,7 +10,7 @@
     <div th:insert="~{common/inpatient_header.html :: header}"></div>
     <section class="body">
         <div class="add_form">
-            <h1>Добавить процедуру пациента</h1>
+            <h1 th:text="'Сделать процедуру пациенту ' + ${inpatient.animal.name}">Сделать процедуру пациенту</h1>
             <form th:action="@{/inpatient/add-procedure}" th:object="${inpatientProcedure}" method="post">
                 <input type="text" name="inpatientId" th:value="${inpatientId}" hidden>
                 <div class="form-section">
@@ -25,7 +25,7 @@
                     <select th:field="*{medicationStorage}" class="form-control" id="medication_select">
                         <option th:each="medicationStorage : ${medicationStorages}"
                                 th:attr="data-max=${medicationStorage.amount}"
-                                th:value="${medicationStorage.id}" th:text="${medicationStorage.medication.name}"></option>
+                                th:value="${medicationStorage.id}" th:text="${medicationStorage.medication.name} + ' (' +${medicationStorage.medication.unit.unitName} +')'"></option>
                     </select>
                 </div>
                 <div class="form-section">

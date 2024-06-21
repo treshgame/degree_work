@@ -19,5 +19,5 @@ public class AppointmentProcedures {
     private Procedure procedure;
     @ManyToOne
     private MedicationStorage medicationStorage;
-    private int medicationAmount;
+    private double medicationAmount;
 }

@@ -23,7 +23,7 @@ public class InpatientProcedures {
     @ManyToOne
     private MedicationStorage medicationStorage;
     private LocalDateTime procedureTime;
-    private int amount;
+    private double amount;
 
     public String formattedDateTime(){
         return procedureTime.format(DateTimeFormatter.ISO_LOCAL_DATE)

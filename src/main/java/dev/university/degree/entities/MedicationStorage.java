@@ -17,5 +17,5 @@ public class MedicationStorage {
     @ManyToOne
     private Medication medication;
     private double supplyPrice;
-    private int amount;
+    private double amount;
 }
